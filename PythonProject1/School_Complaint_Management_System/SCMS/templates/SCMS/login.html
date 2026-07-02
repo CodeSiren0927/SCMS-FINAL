@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - SCMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+/* Global Space Theme Styles */
+body {
+    background-color: #000000;
+    color: #e0e0e0;
+    font-family: 'Orbitron', sans-serif;
+    min-height: 100vh;
+    overflow: hidden; /* Prevent scrollbars completely */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Canvas background for immersive falling stars */
+#spaceCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+}
+
+/* Central Milky Way Galaxy Background Element */
+.milky-way {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 120vw;
+    height: 40vw;
+    min-width: 800px;
+    min-height: 300px;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    border-radius: 50%;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, rgba(255, 235, 180, 0.6) 5%, rgba(181, 51, 255, 0.3) 20%, rgba(0, 212, 255, 0.15) 45%, transparent 70%),
+        radial-gradient(ellipse at 40% 50%, rgba(0, 0, 0, 0.4) 10%, transparent 30%);
+    filter: blur(15px);
+    opacity: 0.75;
+    z-index: -1;
+    pointer-events: none;
+    animation: slowRotate 150s linear infinite;
+}
+
+@keyframes slowRotate {
+    0% { transform: translate(-50%, -50%) rotate(-25deg); }
+    100% { transform: translate(-50%, -50%) rotate(335deg); }
+}
+
+/* Glassmorphism Login Interface Card Container */
+.login-card {
+    background: rgba(10, 12, 22, 0.65) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 212, 255, 0.3) !important;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
+    color: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+}
+
+.brand-text {
+    color: #00d4ff;
+    text-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Form Fields Styling */
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-family: sans-serif;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #00d4ff;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.form-label {
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    color: #a0a0a0;
+}
+
+/* Cosmic Action Buttons */
+.btn-primary {
+    background: transparent;
+    border: 1px solid #00d4ff;
+    color: #00d4ff;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #00d4ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+}
+
+/* Registration Redirect Button style */
+.btn-outline-register {
+    background: transparent;
+    border: 1px solid #b533ff;
+    color: #b533ff;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-register:hover {
+    background: #b533ff;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(181, 51, 255, 0.6);
+}
+
+.auth-link {
+    color: #00d4ff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #fff;
+    text-shadow: 0 0 5px #00d4ff;
+}
+</style>
+</head>
+<body>
+
+<canvas id="spaceCanvas"></canvas>
+<div class="milky-way"></div>
+
+<div class="container d-flex justify-content-center">
+    <div class="card login-card">
+        <h3 class="fw-bold brand-text">REKLAMO KA?</h3>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label for="username" class="form-label text-uppercase">UserName</label>
+                <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Enter your Username" required>
+            </div>
+
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label for="password" class="form-label text-uppercase mb-0">Password</label>
+                    <a href="#" class="auth-link">Forgot?</a>
+                </div>
+                <input type="password" class="form-control form-control-lg mt-2" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="d-grid mt-5 gap-3">
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill">INITIALIZE LOGIN</button>
+
+                <a href="/register/" class="btn btn-outline-register btn-lg rounded-pill text-center d-flex align-items-center justify-content-center">BECOME AN ALIEN</a>
+            </div>
+
+            <div class="text-center mt-4">
+                <span class="text-secondary small">System access restricted to authorized personnel.</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const canvas = document.getElementById('spaceCanvas');
+const ctx = canvas.getContext('2d');
+
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
+
+const starColors = ['#00d4ff', '#ff3e3e', '#00ff41', '#ffeb3b', '#e0e0e0', '#b533ff', '#ff9f1a'];
+
+class FallingStar {
+    constructor(initialSetup = false) {
+        this.initialSetup = initialSetup;
+        this.reset();
+    }
+
+    reset() {
+        this.x = Math.random() * width;
+
+        // Whole screen implementation logic
+        if (this.initialSetup) {
+            // Distribute stars seamlessly across the full height axis on instantiation
+            this.y = Math.random() * height;
+            this.initialSetup = false;
+        } else {
+            // Standard recycle frame boundary limits
+            this.y = Math.random() * -100;
+        }
+
+        this.length = Math.random() * 60 + 20;
+        this.speed = Math.random() * 12 + 6;
+        this.color = starColors[Math.floor(Math.random() * starColors.length)];
+        this.angle = Math.PI / 4;
+    }
+
+    update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+
+        if (this.y > height || this.x > width) {
+            this.reset();
+        }
+    }
+
+    draw() {
+        ctx.beginPath();
+        let gradient = ctx.createLinearGradient(
+            this.x, this.y,
+            this.x - Math.cos(this.angle) * this.length,
+            this.y - Math.sin(this.angle) * this.length
+        );
+        gradient.addColorStop(0, this.color);
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x - Math.cos(this.angle) * this.length, this.y - Math.sin(this.angle) * this.length);
+        ctx.stroke();
+    }
+}
+
+// Increased particle threshold limit to 55 elements for complete coverage densities
+const starArray = Array.from({ length: 55 }, () => new FallingStar(true));
+
+function renderLoop() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 0, width, height);
+
+    starArray.forEach(star => {
+        star.update();
+        star.draw();
+    });
+
+    requestAnimationFrame(renderLoop);
+}
+
+renderLoop();
+</script>
+</body>
+</html>

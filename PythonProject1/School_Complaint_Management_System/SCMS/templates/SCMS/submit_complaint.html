@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Complaint - SCMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+/* Global Space Theme Styles */
+body {
+    background-color: #000000;
+    color: #e0e0e0;
+    font-family: 'Orbitron', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Canvas background for immersive falling stars */
+#spaceCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+}
+
+/* Central Planet Earth */
+.earth-planet {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 450px;
+    height: 450px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    /* Layered gradients to simulate oceans, landmasses, and clouds */
+    background:
+        /* Clouds */
+        radial-gradient(ellipse at 60% 40%, rgba(255, 255, 255, 0.35) 5%, transparent 25%),
+        radial-gradient(ellipse at 20% 70%, rgba(255, 255, 255, 0.25) 2%, transparent 20%),
+        /* Continents */
+        radial-gradient(circle at 75% 35%, #23612d 5%, #3c8243 15%, transparent 35%),
+        radial-gradient(circle at 30% 60%, #5c4d29 2%, #3c8243 20%, transparent 45%),
+        radial-gradient(circle at 50% 10%, #d9d9d9 1%, transparent 15%), /* Ice cap */
+        /* Deep Ocean Base */
+        #0b457f;
+    box-shadow:
+        inset -50px -50px 80px rgba(0, 0, 0, 0.85), /* Dark side */
+        inset 15px 15px 40px rgba(255, 255, 255, 0.25), /* Light reflection */
+        0 0 50px rgba(0, 153, 255, 0.4); /* Atmospheric outer glow */
+    z-index: -1;
+    opacity: 0.7;
+    pointer-events: none;
+    animation: orbitSpin 150s linear infinite;
+}
+
+@keyframes orbitSpin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Navbar Customization */
+.navbar {
+    background: rgba(5, 5, 10, 0.7) !important;
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid #00d4ff;
+}
+.navbar-brand { color: #00d4ff !important; text-shadow: 0 0 10px #00d4ff; letter-spacing: 2px; }
+
+/* Glassmorphism Form Card */
+.form-card {
+    background: rgba(10, 12, 22, 0.65) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 212, 255, 0.25) !important;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+    color: #fff;
+    border-radius: 12px;
+    padding: 2.5rem;
+}
+.card-header-title {
+    color: #00d4ff;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-family: sans-serif;
+}
+.form-control:focus, .form-select:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #00d4ff;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+.form-control::placeholder { color: rgba(255, 255, 255, 0.3); }
+/* Fix dropdown options text color */
+option { background: #05070a; color: #fff; }
+
+.form-label {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: #a0a0a0;
+}
+
+/* Button Styling */
+.btn-primary {
+    background: transparent;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    background: #00ff41;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+}
+.btn-outline-light { border-color: #00d4ff; color: #00d4ff; }
+.btn-outline-light:hover { background: #00d4ff; color: #05070a; box-shadow: 0 0 10px #00d4ff; }
+</style>
+</head>
+<body>
+
+<canvas id="spaceCanvas"></canvas>
+<div class="earth-planet"></div>
+
+<nav class="navbar navbar-dark shadow-sm mb-5">
+<div class="container">
+<a class="navbar-brand fw-bold" href="#">SCMS STUDENT PORTAL</a>
+<div class="d-flex gap-3">
+<a href="/profile/" class="btn btn-outline-light btn-sm">BACK TO PROFILE</a>
+</div>
+</div>
+</nav>
+
+<div class="container d-flex justify-content-center pb-5">
+    <div class="card form-card w-100" style="max-width: 700px;">
+        <h4 class="fw-bold card-header-title text-center text-uppercase">File a New Complaint</h4>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label for="title" class="form-label text-uppercase">Complaint Title</label>
+                <input type="text" class="form-control form-control-lg" id="title" name="title" placeholder="Brief summary of the issue" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="category" class="form-label text-uppercase">Category</label>
+                <select class="form-select form-select-lg" id="category" name="category" required>
+                    <option value="" selected disabled>Select the department...</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Facilities">Facilities & Maintenance</option>
+                    <option value="IT Support">IT Support & Connectivity</option>
+                    <option value="Administration">Administration</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="description" class="form-label text-uppercase">Detailed Description</label>
+                <textarea class="form-control" id="description" name="description" rows="5" placeholder="Provide all necessary details regarding your complaint..." required></textarea>
+            </div>
+
+            <div class="d-grid mt-5">
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill">SUBMIT TRANSMISSION</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// High-performance Canvas animation engine for Multi-colored Falling Stars (Full Screen)
+const canvas = document.getElementById('spaceCanvas');
+const ctx = canvas.getContext('2d');
+
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
+
+const starColors = ['#00d4ff', '#ff3e3e', '#00ff41', '#ffeb3b', '#e0e0e0', '#b533ff', '#ff9f1a'];
+
+class FallingStar {
+    constructor(initialSetup = false) {
+        this.initialSetup = initialSetup;
+        this.reset();
+    }
+
+    reset() {
+        this.x = Math.random() * width;
+
+        if (this.initialSetup) {
+            this.y = Math.random() * height;
+            this.initialSetup = false;
+        } else {
+            this.y = Math.random() * -100;
+        }
+
+        this.length = Math.random() * 60 + 20;
+        this.speed = Math.random() * 12 + 6;
+        this.color = starColors[Math.floor(Math.random() * starColors.length)];
+        this.angle = Math.PI / 4;
+    }
+
+    update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+
+        if (this.y > height || this.x > width) {
+            this.reset();
+        }
+    }
+
+    draw() {
+        ctx.beginPath();
+        let gradient = ctx.createLinearGradient(
+            this.x, this.y,
+            this.x - Math.cos(this.angle) * this.length,
+            this.y - Math.sin(this.angle) * this.length
+        );
+        gradient.addColorStop(0, this.color);
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x - Math.cos(this.angle) * this.length, this.y - Math.sin(this.angle) * this.length);
+        ctx.stroke();
+    }
+}
+
+// 55 elements for complete coverage densities
+const starArray = Array.from({ length: 55 }, () => new FallingStar(true));
+
+function renderLoop() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 0, width, height);
+
+    starArray.forEach(star => {
+        star.update();
+        star.draw();
+    });
+
+    requestAnimationFrame(renderLoop);
+}
+
+renderLoop();
+</script>
+</body>
+</html>

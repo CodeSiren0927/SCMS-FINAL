@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SCMS // SYSTEM TERMINAL</title>
+    <style>
+        body { background: #0a0f1d; color: #00ffcc; font-family: 'Courier New', monospace; margin: 40px; }
+        a { color: #ff007f; text-decoration: none; margin-right: 15px; }
+        input, textarea, select { background: #12192c; color: #fff; border: 1px solid #00ffcc; padding: 10px; margin-bottom: 10px; width: 100%; box-sizing: border-box; }
+        button { background: #ff007f; color: white; border: none; padding: 10px 20px; cursor: pointer; font-family: monospace; }
+        .card { border: 1px dashed #00ffcc; padding: 20px; margin-bottom: 15px; background: #0e1726; }
+        .flex { display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span style="font-weight: bold; margin-right: 30px;">[SCMS MATRIX]</span>
+        {% if user.is_authenticated %}
+            <a href="{% url 'submit_complaint' %}">Submit Log</a>
+            <a href="{% url 'profile' %}">User Profile</a>
+            {% if user.is_staff %}<a href="{% url 'admin_dashboard' %}">Admin Core</a>{% endif %}
+            <a href="{% url 'logout' %}">Disconnect</a>
+        {% else %}
+            <a href="{% url 'login' %}">Connect</a>
+            <a href="{% url 'register' %}">Register Node</a>
+        {% endif %}
+    </nav>
+    <hr style="border: 1px solid #00ffcc;">
+
+    {% if messages %}
+        {% for message in messages %}<p style="color: #ffaa00;">>>> {{ message }}</p>{% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

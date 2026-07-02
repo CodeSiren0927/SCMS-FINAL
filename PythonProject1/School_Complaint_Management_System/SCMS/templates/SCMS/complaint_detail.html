@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #05070a; color: white; font-family: 'Orbitron', sans-serif; padding: 40px; background-image: radial-gradient(circle at 80% 20%, #1a1a2e 0%, #05070a 70%); }
+        .container { max-width: 800px; margin: 0 auto; }
+        h3 { font-size: 32px; color: #00d4ff; margin-bottom: 20px; text-transform: uppercase; }
+        .content-box { background: rgba(26, 26, 46, 0.8); padding: 30px; border: 1px solid #333; font-size: 20px; line-height: 1.6; }
+        .btn { padding: 15px 25px; border: none; cursor: pointer; text-transform: uppercase; font-weight: bold; transition: all 0.3s ease; font-size: 16px; }
+        .btn:hover { filter: brightness(1.5); box-shadow: 0 0 20px rgba(255,255,255,0.5); transform: scale(1.05); }
+        .btn-approve { background-color: #00ff41; color: black; }
+        .btn-reject { background-color: #ff3e3e; color: white; }
+        .modal { display: none; margin-top: 20px; padding: 25px; border: 1px solid #333; background: #111; }
+        textarea { width: 100%; padding: 20px; background: #000; border: 1px solid #444; color: white; font-size: 16px; margin-bottom: 10px; box-sizing: border-box; }
+        .back-btn { display: inline-block; margin-top: 40px; padding: 15px 30px; border: 2px solid #00d4ff; color: #00d4ff; text-decoration: none; font-size: 16px; border-radius: 2px; }
+        .back-btn:hover { background: #00d4ff; color: #000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>{{ complaint.title }}</h3>
+        <div class="content-box">{{ complaint.description }}</div>
+
+        <form id="statusForm" action="{% url 'update_status' complaint.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="status" id="statusField" value="{{ complaint.status }}">
+
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button type="button" class="btn btn-approve" onclick="showModal('approval-wrapper', 'Approved')">Approve</button>
+                <button type="button" class="btn btn-reject" onclick="showModal('rejection-wrapper', 'Rejected')">Reject</button>
+            </div>
+
+            <div id="approval-wrapper" class="modal">
+                <p>CONFIRM APPROVAL FOR COMPLAINT #{{ complaint.id }}?</p>
+                <button type="submit" class="btn btn-approve">CONFIRM</button>
+                <button type="button" class="btn" style="background:#444; color:white;" onclick="hideModals()">CANCEL</button>
+            </div>
+
+            <div id="rejection-wrapper" class="modal">
+                <textarea name="admin_remarks" id="remarksField" placeholder="Provide reason for rejection..."></textarea>
+                <button type="submit" class="btn btn-reject">CONFIRM REJECTION</button>
+                <button type="button" class="btn" style="background:#444; color:white;" onclick="hideModals()">CANCEL</button>
+            </div>
+        </form>
+        <a href="{% url 'admin_dashboard' %}" class="back-btn">&larr; RETURN TO DASHBOARD</a>
+    </div>
+
+    <script>
+        function showModal(id, statusVal) {
+            hideModals();
+            document.getElementById('statusField').value = statusVal;
+            document.getElementById(id).style.display = 'block';
+
+            // Dynamically handle validation so approval isn't blocked
+            const remarksField = document.getElementById('remarksField');
+            if (statusVal === 'Rejected') {
+                remarksField.required = true;
+            } else {
+                remarksField.required = false;
+            }
+        }
+
+        function hideModals() {
+            document.getElementById('approval-wrapper').style.display = 'none';
+            document.getElementById('rejection-wrapper').style.display = 'none';
+            // Reset required property when modals close
+            document.getElementById('remarksField').required = false;
+        }
+    </script>
+</body>
+</html>

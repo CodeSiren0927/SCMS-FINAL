@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Complaint | Student Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0f12;
+            background-image:
+                linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+            position: relative;
+
+            /* Hides the global window scrollbars */
+            overflow: hidden;
+            scrollbar-width: none;            /* Firefox */
+            -ms-overflow-style: none;         /* IE and Edge */
+        }
+
+        /* Hides the global scrollbar for Chrome, Safari, and Opera */
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- Slow Moving Tech Sun System --- */
+        .tech-sun {
+            position: absolute;
+            bottom: 15%; left: -150px;
+            width: 100px; height: 100px;
+            background: #fffbdf;
+            border-radius: 50%;
+            box-shadow: 0 0 40px #fbbf24, 0 0 80px rgba(245, 158, 11, 0.5), 0 0 120px rgba(239, 68, 68, 0.3);
+            animation: slowSunOrbit 60s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes slowSunOrbit {
+            0% { left: -150px; transform: translateY(0); }
+            50% { transform: translateY(-80px); }
+            100% { left: calc(100% + 150px); transform: translateY(0); }
+        }
+
+        /* --- Slow Moving Tech Moon System --- */
+        .tech-moon {
+            position: absolute;
+            top: 15%; right: -150px;
+            width: 80px; height: 80px;
+            background: #e0f2fe;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #38bdf8, 0 0 60px rgba(168, 85, 247, 0.5), 0 0 100px rgba(99, 102, 241, 0.3);
+            animation: slowMoonOrbit 60s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes slowMoonOrbit {
+            0% { right: -150px; transform: translateY(0); }
+            50% { transform: translateY(60px); }
+            100% { right: calc(100% + 150px); transform: translateY(0); }
+        }
+
+        /* --- Detailed Alien UFO & Plasma Bombing System --- */
+        .ufo-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+
+        .alien-ufo {
+            position: absolute;
+            width: 90px; height: 28px;
+            background: linear-gradient(to bottom, #334155, #0f172a);
+            border-radius: 50%;
+            animation: ufoFlightTrajectory 20s linear infinite;
+            opacity: 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.2);
+            border: 1px solid #475569;
+        }
+
+        .alien-ufo::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: 27px;
+            width: 36px; height: 18px;
+            background: radial-gradient(circle at top, rgba(0, 255, 0, 0.8) 20%, #1e293b 80%);
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 0 15px #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+        .alien-ufo::after {
+            content: '';
+            position: absolute;
+            bottom: 2px; left: 15px;
+            width: 60px; height: 4px;
+            background: repeating-linear-gradient(90deg, #38bdf8, #38bdf8 6px, transparent 6px, transparent 12px);
+            border-radius: 50%;
+            animation: ufoLightsFlicker 0.3s infinite linear;
+        }
+
+        .ufo-bomb {
+            position: absolute;
+            top: 24px; left: 41px;
+            width: 8px; height: 14px;
+            background: radial-gradient(circle, #ff0055 30%, transparent 80%);
+            border-radius: 50% 50% 30% 30%;
+            box-shadow: 0 0 12px #ff0055, 0 0 20px #ff0055;
+            animation: dropBombCycle 0.8s infinite linear;
+        }
+
+        @keyframes ufoLightsFlicker {
+            0% { opacity: 0.5; filter: hue-rotate(0deg); }
+            100% { opacity: 1; filter: hue-rotate(90deg); }
+        }
+
+        @keyframes dropBombCycle {
+            0% { transform: translateY(0) scale(0.4); opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(400px) scale(1.2); opacity: 0; }
+        }
+
+        @keyframes ufoFlightTrajectory {
+            0% { left: -120px; top: 15%; transform: translateX(0) rotate(0deg); opacity: 0; }
+            4% { opacity: 1; }
+            25% { top: 35%; transform: rotate(-5deg); }
+            50% { top: 10%; transform: rotate(5deg); }
+            75% { top: 40%; transform: rotate(-3deg); }
+            96% { opacity: 1; }
+            100% { left: calc(100% + 120px); top: 20%; transform: translateX(0) rotate(0deg); opacity: 0; }
+        }
+
+        /* --- Global Inverted Falling Star Field Setup --- */
+        .star-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            border-radius: 50%; opacity: 0;
+            animation: invertedStreakTrajectory cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+        }
+
+        .star::after {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: #ffffff; border-radius: 50%;
+            box-shadow: 0 0 8px currentColor;
+            animation: starExplode cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+            animation-duration: inherit; animation-delay: inherit;
+        }
+
+        .star::before {
+            content: '';
+            position: absolute; top: 50%; left: 0;
+            transform: translateY(-50%) translateX(-100%);
+            height: 100%; border-radius: 50% 0 0 50%;
+            filter: blur(1px);
+            animation: trailFade linear infinite;
+            animation-duration: inherit; animation-delay: inherit;
+        }
+
+        @keyframes starExplode {
+            0%, 68% { background: #ffffff; transform: scale(1); }
+            70% { background: #ff5722; transform: scale(2.2); box-shadow: 0 0 40px #ff3300, 0 0 80px #ff5722; }
+            76% { background: transparent; transform: scale(4.5); border: 5px solid currentColor; opacity: 0.8; }
+            85%, 100% { transform: scale(6); border: 0px solid transparent; opacity: 0; }
+        }
+
+        @keyframes trailFade { 0%, 68% { opacity: 1; } 70%, 100% { opacity: 0; } }
+
+        .star-green { bottom: -20px; left: 5%; width: 14px; height: 14px; color: #00ff00; background: #00ff00; box-shadow: 0 0 20px #00ff00, 0 0 40px rgba(0, 255, 0, 0.6); animation-delay: 0s; animation-duration: 9.5s; }
+        .star-green::before { width: 220px; background: linear-gradient(to left, transparent, #00ff00); }
+        .star-purple { bottom: -20px; left: 30%; width: 16px; height: 16px; color: #d946ef; background: #d946ef; box-shadow: 0 0 25px #d946ef, 0 0 50px rgba(217, 70, 239, 0.5); animation-delay: 3.5s; animation-duration: 13s; }
+        .star-purple::before { width: 180px; background: linear-gradient(to left, transparent, #d946ef); }
+        .star-blue { bottom: 15%; left: -100px; width: 12px; height: 12px; color: #38bdf8; background: #38bdf8; box-shadow: 0 0 18px #38bdf8, 0 0 35px rgba(56, 189, 248, 0.7); animation-delay: 7s; animation-duration: 11s; }
+        .star-blue::before { width: 240px; background: linear-gradient(to left, transparent, #38bdf8); }
+        .star-gold { bottom: -20px; left: 55%; width: 13px; height: 13px; color: #fbbf24; background: #fbbf24; box-shadow: 0 0 20px #fbbf24, 0 0 40px rgba(251, 191, 36, 0.6); animation-delay: 1.5s; animation-duration: 14s; }
+        .star-gold::before { width: 190px; background: linear-gradient(to left, transparent, #fbbf24); }
+        .star-orange { bottom: 40%; left: -100px; width: 15px; height: 15px; color: #f97316; background: #f97316; box-shadow: 0 0 22px #f97316, 0 0 45px rgba(249, 115, 22, 0.6); animation-delay: 5s; animation-duration: 10s; }
+        .star-orange::before { width: 210px; background: linear-gradient(to left, transparent, #f97316); }
+        .star-white { bottom: -20px; left: 75%; width: 10px; height: 10px; color: #e2e8f0; background: #e2e8f0; box-shadow: 0 0 15px #e2e8f0, 0 0 30px rgba(226, 232, 240, 0.8); animation-delay: 8.5s; animation-duration: 12s; }
+        .star-white::before { width: 260px; background: linear-gradient(to left, transparent, #e2e8f0); }
+
+        @keyframes invertedStreakTrajectory {
+            0% { transform: rotate(-35deg) translateX(0); opacity: 0; }
+            4% { opacity: 1; }
+            68% { opacity: 1; }
+            80% { opacity: 0.5; }
+            100% { transform: rotate(-35deg) translateX(2100px); opacity: 0; }
+        }
+
+        .container { position: relative; z-index: 1; }
+
+        /* The Notebook Container */
+        .notebook-card {
+            width: 100%; max-width: 460px;
+            background-color: #ffffff;
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 100% 2.5rem;
+            border-radius: 4px 16px 16px 4px;
+            padding: 2rem 2rem 2rem 3.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), -10px 0 0 #000000, -14px 0 0 #00ff00;
+            border: 1px solid #cbd5e1; position: relative;
+        }
+
+        .notebook-card::before {
+            content: ""; position: absolute; top: 15px; bottom: 15px; left: 12px; width: 14px;
+            background: repeating-linear-gradient(to bottom, #475569 0px, #475569 6px, transparent 6px, transparent 32px);
+            border-right: 2px solid #64748b; z-index: 2;
+        }
+
+        .notebook-card::after {
+            content: ""; position: absolute; top: 0; bottom: 0; left: 3rem; width: 1px;
+            background-color: #f87171; opacity: 0.7;
+        }
+
+        .portal-title {
+            font-family: 'Orbitron', sans-serif; font-size: 1.15rem; font-weight: 900;
+            text-transform: uppercase; color: #000000; letter-spacing: 0.5px;
+            border-bottom: 3px solid #00ff00; display: inline-block; padding-bottom: 4px;
+        }
+
+        .form-group-custom label {
+            font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 0.85rem;
+            color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .form-group-custom input, .form-group-custom textarea, .form-group-custom select {
+            display: block; width: 100%; padding: 0.45rem 0.75rem; font-size: 0.95rem;
+            color: #000000; background-color: rgba(0, 255, 0, 0.02); border: 2px solid #000000;
+            border-radius: 0; font-weight: 500;
+        }
+
+        .form-group-custom input:focus, .form-group-custom textarea:focus, .form-group-custom select:focus {
+            background-color: #ffffff; border-color: #00ff00; outline: 0; box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .btn-submit {
+            font-family: 'Orbitron', sans-serif; background-color: #000000; color: #00ff00;
+            font-weight: 700; text-transform: uppercase; border: 2px solid #00ff00;
+            border-radius: 0; padding: 0.6rem; letter-spacing: 1px; transition: all 0.2s ease-in-out;
+        }
+
+        .btn-submit:hover {
+            background-color: #00ff00; color: #000000; border-color: #000000; box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .badge-user {
+            background-color: #000000; color: #00ff00; font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem; padding: 4px 8px; border-radius: 0; border: 1px solid #00ff00;
+        }
+
+        /* Fixed Container for Planet + Text Label */
+        .planet-container-block {
+            position: fixed; top: 25px; right: 25px;
+            display: flex; flex-direction: column; align-items: center; z-index: 1050;
+        }
+
+        .history-planet-trigger {
+            width: 70px; height: 70px;
+            background: radial-gradient(circle at 30% 30%, #00ff00, #043e04);
+            border-radius: 50%; cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6), inset -5px -5px 15px rgba(0,0,0,0.8);
+            border: none; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .history-planet-trigger::after {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 110px; height: 20px;
+            border: 4px solid rgba(0, 255, 0, 0.5); border-top-color: transparent;
+            border-radius: 50%; transform: translate(-50%, -50%) rotate(-25deg); pointer-events: none;
+        }
+
+        .history-planet-trigger:hover {
+            transform: scale(1.1) rotate(10deg); box-shadow: 0 0 35px #00ff00, inset -3px -3px 10px rgba(0,0,0,0.8);
+        }
+
+        .planet-label {
+            margin-top: 10px; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700;
+            color: #00ff00; text-transform: uppercase; letter-spacing: 1.5px;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.8); pointer-events: none; text-align: center;
+        }
+
+        /* --- Bottom Right Corner Black Hole Logout Component --- */
+        .blackhole-container-block {
+            position: fixed; bottom: 25px; right: 25px;
+            display: flex; flex-direction: column; align-items: center; z-index: 1050;
+        }
+
+        .blackhole-logout-trigger {
+            width: 65px; height: 65px;
+            background: radial-gradient(circle at center, #000000 45%, #1e1b4b 65%, #311042 85%, transparent 100%);
+            border-radius: 50%; cursor: pointer; border: none; position: relative;
+            box-shadow: 0 0 20px #ef4444, inset 0 0 15px rgba(0,0,0,1);
+            animation: blackholeSwirl 8s linear infinite;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .blackhole-logout-trigger::before {
+            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 2px dashed rgba(239, 68, 68, 0.4); border-radius: 50%;
+            animation: blackholeOrbitInverse 12s linear infinite;
+        }
+
+        .blackhole-logout-trigger:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 35px #ff0055, inset 0 0 10px rgba(0,0,0,1);
+        }
+
+        .blackhole-label {
+            margin-top: 8px; font-family: 'Orbitron', sans-serif; font-size: 0.62rem; font-weight: 700;
+            color: #ef4444; text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: 0 0 6px rgba(239, 68, 68, 0.7); pointer-events: none; text-align: center;
+        }
+
+        @keyframes blackholeSwirl {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes blackholeOrbitInverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* Centered Sci-Fi Confirmation Note Overrides */
+        .logout-modal-content {
+            background-color: #070a12;
+            border: 2px dashed #ef4444;
+            border-radius: 0;
+            color: #ffffff;
+            box-shadow: 0 0 40px rgba(239, 68, 68, 0.25);
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .logout-title-note {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: #ef4444;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.5;
+        }
+
+        .btn-logout-confirm {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            background-color: #ef4444;
+            color: #000000;
+            border: 1px solid #ef4444;
+            border-radius: 0;
+            padding: 6px 20px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .btn-logout-confirm:hover {
+            background-color: #000000;
+            color: #ef4444;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-logout-abort {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            background-color: transparent;
+            color: #cbd5e1;
+            border: 1px solid #cbd5e1;
+            border-radius: 0;
+            padding: 6px 20px;
+            transition: all 0.2s;
+        }
+
+        .btn-logout-abort:hover {
+            color: #ffffff;
+            border-color: #ffffff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Sci-Fi Modal Custom Overrides */
+        .scifi-modal-content {
+            background-color: #0f172a; border: 2px solid #00ff00; border-radius: 0;
+            color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+        }
+
+        .scifi-modal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.2); background-color: #070a12; }
+        .scifi-modal-title { font-family: 'Orbitron', sans-serif; color: #00ff00; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; }
+
+        .scifi-close-btn {
+            background-color: transparent; border: 1px solid #00ff00; color: #00ff00;
+            font-family: 'Orbitron', sans-serif; padding: 2px 8px; font-size: 0.8rem; transition: all 0.2s;
+        }
+        .scifi-close-btn:hover { background-color: #00ff00; color: #000000; }
+
+        .scifi-modal-body {
+            max-height: 450px;
+            overflow-y: auto;
+            background-image: linear-gradient(rgba(0, 255, 0, 0.01) 1px, transparent 1px);
+            background-size: 100% 20px;
+            scrollbar-width: none;       /* Firefox */
+            -ms-overflow-style: none;    /* IE and Edge */
+        }
+        .scifi-modal-body::-webkit-scrollbar {
+            display: none;               /* Chrome, Safari, and Opera */
+        }
+
+        .complaint-log-item {
+            background: rgba(255, 255, 255, 0.02); border-left: 4px solid #00ff00;
+            border: 1px solid rgba(255,255,255,0.05); border-left-width: 4px; border-left-color: #00ff00;
+            padding: 14px; margin-bottom: 12px; cursor: pointer; transition: background 0.2s ease;
+        }
+        .complaint-log-item:hover {
+            background: rgba(0, 255, 0, 0.04);
+        }
+
+        .complaint-log-title { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.95rem; color: #ffffff; margin-bottom: 4px; }
+
+        .complaint-log-msg {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .status-pill {
+            font-family: 'Orbitron', sans-serif; font-size: 0.65rem; padding: 2px 6px;
+            text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; display: inline-block;
+        }
+        .status-pending { background-color: rgba(234, 179, 8, 0.2); color: #eab308; border: 1px solid #eab308; }
+        .status-resolved { background-color: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid #22c55e; }
+        .status-rejected { background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
+
+        /* Action Buttons inside Logs */
+        .btn-log-action {
+            position: relative; z-index: 10;
+            font-family: 'Orbitron', sans-serif; font-size: 0.65rem; text-transform: uppercase;
+            padding: 3px 8px; border-radius: 0; background-color: transparent; border: 1px solid #cbd5e1; color: #cbd5e1;
+            transition: all 0.2s; margin-left: 6px;
+        }
+        .btn-log-view:hover { border-color: #00ff00; color: #00ff00; background: rgba(0, 255, 0, 0.1); }
+        .btn-log-edit:hover { border-color: #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.1); }
+        .btn-log-cancel:hover { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+
+        /* Scifi Form Overrides inside Modal */
+        .scifi-modal-content .form-group-custom label { color: #94a3b8; }
+        .scifi-modal-content .form-group-custom input,
+        .scifi-modal-content .form-group-custom textarea,
+        .scifi-modal-content .form-group-custom select {
+            color: #ffffff; background-color: rgba(0, 255, 0, 0.04); border: 1px solid rgba(0, 255, 0, 0.4);
+        }
+        .scifi-modal-content .form-group-custom input:focus,
+        .scifi-modal-content .form-group-custom textarea:focus,
+        .scifi-modal-content .form-group-custom select:focus { background-color: #070a12; border-color: #00ff00; }
+
+        .read-only-msg-box {
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px; font-size: 0.9rem; color: #cbd5e1; white-space: pre-wrap; word-break: break-word;
+        }
+
+        .text-scifi-blue {
+            color: #38bdf8 !important;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="planet-container-block">
+        <button class="history-planet-trigger" data-bs-toggle="modal" data-bs-target="#complaintHistoryModal" title="View Transmission Logs"></button>
+        <div class="planet-label">View Logs</div>
+    </div>
+
+    <div class="blackhole-container-block">
+        <button class="blackhole-logout-trigger" data-bs-toggle="modal" data-bs-target="#universeLogoutModal" title="Leave Universe System"></button>
+        <div class="blackhole-label">Log Out</div>
+    </div>
+
+    <div class="tech-sun"></div>
+    <div class="tech-moon"></div>
+
+    <div class="ufo-container">
+        <div class="alien-ufo"><div class="ufo-bomb"></div></div>
+    </div>
+
+    <div class="star-container">
+        <div class="star star-green"></div>
+        <div class="star star-purple"></div>
+        <div class="star star-blue"></div>
+        <div class="star star-gold"></div>
+        <div class="star star-orange"></div>
+        <div class="star star-white"></div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="card notebook-card border-0">
+            <div class="text-center mb-3">
+                <h4 class="portal-title">Grievance Log System</h4>
+                <div class="mt-2">
+                    <small class="text-muted fw-semibold" style="font-size: 0.75rem;">OPERATOR ID:</small>
+                    <strong class="badge badge-user ms-1">STUDENT_USER</strong>
+                </div>
+            </div>
+
+            <form id="complaintPortalForm" onsubmit="submitFormTransmission(event)">
+
+                <div class="mb-3 form-group-custom">
+                    <label class="form-label mb-1">Type of Issue</label>
+                    <select id="form-category" required class="form-select">
+                        <option value="" disabled selected hidden>SELECT TYPE OF ISSUE...</option>
+                        <option value="Academic Grievances">Academic Grievances (Grades/Instruction)</option>
+                        <option value="Facility & Infrastructure">Facility & Infrastructure (Labs/Classrooms)</option>
+                        <option value="Tuition & Financial Services">Tuition & Financial Services (Accounts)</option>
+                        <option value="Student Conduct & Affairs">Student Conduct & Affairs (Campus Life)</option>
+                    </select>
+                </div>
+
+                <div class="mb-3 form-group-custom">
+                    <label class="form-label mb-1">Which Planet</label>
+                    <select id="form-planet" required class="form-select">
+                        <option value="" disabled selected hidden>SELECT PLANET...</option>
+                        <option value="GCT">PLANET GCT</option>
+                        <option value="ACC">PLANET ACC</option>
+                        <option value="NVC">PLANET NVC</option>
+                        <option value="ASU">PLANET ASU</option>
+                        <option value="SGC">PLANET SGC</option>
+                        <option value="PTC">PLANET PTC</option>
+                    </select>
+                </div>
+
+                <div class="mb-3 form-group-custom">
+                    <label class="form-label mb-1">Complaint Message</label>
+                    <textarea id="form-message" rows="5" placeholder="WRITE FULL PAYLOAD DETAILS MESSAGE..." required class="form-control"></textarea>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-submit shadow-sm">Execute Transmission</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="universeLogoutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content logout-modal-content">
+                <div class="modal-body p-3">
+                    <div class="logout-title-note mb-4">Are you sure you want to leave this universe?</div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="button" class="btn btn-logout-abort" data-bs-dismiss="modal">Abort</button>
+                        <button type="button" class="btn btn-logout-confirm" onclick="executeUniverseDeparture()">Eject</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="complaintHistoryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content scifi-modal-content">
+                <div class="modal-header scifi-modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title scifi-modal-title">Archived Grievance Telemetry</h5>
+                    <button type="button" class="scifi-close-btn" data-bs-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body scifi-modal-body" id="logsContainerElement">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewModalsWrapper"></div>
+    <div id="editModalsWrapper"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Data engine arrays representing base system logs
+        let userComplaintsData = [
+            { pk: 101, category: "Facility & Infrastructure", planet: "GCT", message: "Server rack cooling array in Sector-B failing to keep baseline operations cool.", status: "Pending", created_at: "2026-06-28", admin_remarks: "" },
+            { pk: 102, category: "Academic Grievances", planet: "ACC", message: "Grievance records display latency loops when viewing system output graphs.", status: "Resolved", created_at: "2026-06-25", admin_remarks: "Memory flush complete. Latency normalized." }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderTelemetryLogsEngine();
+        });
+
+        // Departure Function triggered on confirmation
+        function executeUniverseDeparture() {
+            window.location.href = "login.html";
+        }
+
+        // Main parser to build UI content structure dynamically
+        function renderTelemetryLogsEngine() {
+            const logsContainer = document.getElementById("logsContainerElement");
+            const viewWrapper = document.getElementById("viewModalsWrapper");
+            const editWrapper = document.getElementById("editModalsWrapper");
+
+            logsContainer.innerHTML = "";
+            viewWrapper.innerHTML = "";
+            editWrapper.innerHTML = "";
+
+            if(userComplaintsData.length === 0) {
+                logsContainer.innerHTML = `<div class="text-center py-4 text-muted" style="font-size: 0.85rem; font-family: 'Orbitron', sans-serif;">[ NO HISTORICAL TRANSMISSIONS DETECTED ]</div>`;
+                return;
+            }
+
+            userComplaintsData.forEach(complaint => {
+                let statusClass = "status-pending";
+                if(complaint.status === "Resolved") statusClass = "status-resolved";
+                if(complaint.status === "Rejected") statusClass = "status-rejected";
+
+                // 1. Build List Cards for Master History View Modal
+                let itemHTML = `
+                    <div class="complaint-log-item" id="log-item-${complaint.pk}" onclick="triggerPayloadView('${complaint.pk}', event)">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <div class="complaint-log-title dynamic-title">${complaint.category}</div>
+                                <span class="badge bg-secondary rounded-0 opacity-75 text-uppercase" style="font-size:0.6rem; font-family:'Orbitron'; letter-spacing:0.5px;">PLANET ${complaint.planet}</span>
+                            </div>
+                            <span class="status-pill ${statusClass}">${complaint.status}</span>
+                        </div>
+                        <div class="complaint-log-msg dynamic-msg-snippet">${complaint.message}</div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary border-opacity-25">
+                            <span style="font-size: 0.65rem; color: rgba(255,255,255,0.3);">STARDATE: ${complaint.created_at}</span>
+                            <div>
+                                <button class="btn btn-log-action btn-log-view" onclick="triggerPayloadView('${complaint.pk}', event)">View Log</button>
+                                ${complaint.status === 'Pending' ? `
+                                    <button class="btn btn-log-action btn-log-edit" onclick="triggerPayloadEdit('${complaint.pk}', event)">Modify</button>
+                                    <button class="btn btn-log-action btn-log-cancel" onclick="cancelComplaintTelemetry('${complaint.pk}', event)">Cancel</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>`;
+                logsContainer.insertAdjacentHTML('beforeend', itemHTML);
+
+                // 2. Build Detailed Payload View Modals
+                let viewModalHTML = `
+                    <div class="modal fade" id="viewModal${complaint.pk}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content scifi-modal-content shadow-lg">
+                                <div class="modal-header scifi-modal-header">
+                                    <h5 class="modal-title scifi-modal-title" style="color:#00ff00;">Transmission Details</h5>
+                                    <button type="button" class="scifi-close-btn" onclick="returnToLogsDashboard('viewModal${complaint.pk}')">Back</button>
+                                </div>
+                                <div class="modal-body text-start">
+                                    <div class="row mb-3 mt-1">
+                                        <div class="col-6">
+                                            <div class="mb-1"><small class="text-scifi-blue">COMPLAINT CATEGORY:</small></div>
+                                            <div class="text-white small fw-bold text-uppercase" style="font-family:'Orbitron';">${complaint.category}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-1"><small class="text-scifi-blue">ORIGIN PLATFORM:</small></div>
+                                            <div class="text-white small fw-bold text-uppercase" style="font-family:'Orbitron';">PLANET ${complaint.planet}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2"><small class="text-scifi-blue">COMPLAINT MESSAGE:</small></div>
+                                    <div class="read-only-msg-box rounded-0 mb-4 dynamic-view-msg">${complaint.message}</div>
+
+                                    ${complaint.admin_remarks ? `
+                                        <div class="mb-2"><small class="text-info fw-bold">ADMINISTRATIVE RESOLUTION REMARKS:</small></div>
+                                        <div class="read-only-msg-box rounded-0 border-info text-info mb-2" style="background: rgba(0, 212, 255, 0.03);">${complaint.admin_remarks}</div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                viewWrapper.insertAdjacentHTML('beforeend', viewModalHTML);
+
+                // 3. Build Modification Form Modals
+                if(complaint.status === 'Pending') {
+                    let editModalHTML = `
+                        <div class="modal fade" id="editModal${complaint.pk}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content scifi-modal-content shadow-lg">
+                                    <div class="modal-header scifi-modal-header">
+                                        <h5 class="modal-title scifi-modal-title" style="color:#38bdf8;">Modify Log Payload</h5>
+                                        <button type="button" class="scifi-close-btn" onclick="returnToLogsDashboard('editModal${complaint.pk}')">Back</button>
+                                    </div>
+                                    <form onsubmit="saveComplaintRealtime(event, '${complaint.pk}')">
+                                        <div class="modal-body text-start" style="scrollbar-width: none; -ms-overflow-style: none;">
+                                            <div class="mb-3 form-group-custom">
+                                                <label class="form-label mb-1">Complaint Category</label>
+                                                <select id="edit-category-${complaint.pk}" required class="form-select">
+                                                    <option value="Academic Grievances" ${complaint.category === 'Academic Grievances' ? 'selected' : ''}>Academic Grievances</option>
+                                                    <option value="Facility & Infrastructure" ${complaint.category === 'Facility & Infrastructure' ? 'selected' : ''}>Facility & Infrastructure</option>
+                                                    <option value="Tuition & Financial Services" ${complaint.category === 'Tuition & Financial Services' ? 'selected' : ''}>Tuition & Financial Services</option>
+                                                    <option value="Student Conduct & Affairs" ${complaint.category === 'Student Conduct & Affairs' ? 'selected' : ''}>Student Conduct & Affairs</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 form-group-custom">
+                                                <label class="form-label mb-1">Which Planet</label>
+                                                <select id="edit-planet-${complaint.pk}" required class="form-select">
+                                                    <option value="GCT" ${complaint.planet === 'GCT' ? 'selected' : ''}>PLANET GCT</option>
+                                                    <option value="ACC" ${complaint.planet === 'ACC' ? 'selected' : ''}>PLANET ACC</option>
+                                                    <option value="NVC" ${complaint.planet === 'NVC' ? 'selected' : ''}>PLANET NVC</option>
+                                                    <option value="ASU" ${complaint.planet === 'ASU' ? 'selected' : ''}>PLANET ASU</option>
+                                                    <option value="SGC" ${complaint.planet === 'SGC' ? 'selected' : ''}>PLANET SGC</option>
+                                                    <option value="PTC" ${complaint.planet === 'PTC' ? 'selected' : ''}>PLANET PTC</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 form-group-custom">
+                                                <label class="form-label mb-1">Complaint Message</label>
+                                                <textarea id="edit-message-${complaint.pk}" rows="4" required class="form-control">${complaint.message}</textarea>
+                                            </div>
+                                            <div class="d-grid mt-3">
+                                                <button type="submit" class="btn btn-submit" style="color: #38bdf8; border-color: #38bdf8;">Save Alterations</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>`;
+                    editWrapper.insertAdjacentHTML('beforeend', editModalHTML);
+                }
+            });
+        }
+
+        // Action Router: View Transmission Modal
+        function triggerPayloadView(pk, event) {
+            event.stopPropagation();
+            hideModalInstance('complaintHistoryModal');
+            showModalInstance(`viewModal${pk}`);
+        }
+
+        // Action Router: Edit Transmission Modal
+        function triggerPayloadEdit(pk, event) {
+            event.stopPropagation();
+            hideModalInstance('complaintHistoryModal');
+            showModalInstance(`editModal${pk}`);
+        }
+
+        // Return from Inner Modals safely back to History Log Dashboard
+        function returnToLogsDashboard(activeModalId) {
+            hideModalInstance(activeModalId);
+            showModalInstance('complaintHistoryModal');
+        }
+
+        // Process Base Form Transmission submissions
+        function submitFormTransmission(event) {
+            event.preventDefault();
+            const category = document.getElementById("form-category").value;
+            const planet = document.getElementById("form-planet").value;
+            const message = document.getElementById("form-message").value;
+            const targetPk = Math.floor(100 + Math.random() * 900);
+
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            userComplaintsData.unshift({
+                pk: targetPk,
+                category: category,
+                planet: planet,
+                message: message,
+                status: "Pending",
+                created_at: todayStr,
+                admin_remarks: ""
+            });
+
+            document.getElementById("complaintPortalForm").reset();
+            renderTelemetryLogsEngine();
+            showModalInstance('complaintHistoryModal');
+        }
+
+        // Persist Inline Edited Modifications back to arrays
+        function saveComplaintRealtime(event, pk) {
+            event.preventDefault();
+            const complaint = userComplaintsData.find(c => c.pk == pk);
+            if(complaint) {
+                complaint.category = document.getElementById(`edit-category-${pk}`).value;
+                complaint.planet = document.getElementById(`edit-planet-${pk}`).value;
+                complaint.message = document.getElementById(`edit-message-${pk}`).value;
+
+                renderTelemetryLogsEngine();
+                returnToLogsDashboard(`editModal${pk}`);
+            }
+        }
+
+        // Drop Telemetry Record entries completely
+        function cancelComplaintTelemetry(pk, event) {
+            event.stopPropagation();
+            if(confirm("Confirm deletion of this Transmission signal data?")) {
+                userComplaintsData = userComplaintsData.filter(c => c.pk != pk);
+                renderTelemetryLogsEngine();
+            }
+        }
+
+        // Bootstrap Helper abstractions
+        function showModalInstance(id) {
+            const el = document.getElementById(id);
+            if(el) {
+                let inst = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
+                inst.show();
+            }
+        }
+
+        function hideModalInstance(id) {
+            const el = document.getElementById(id);
+            if(el) {
+                let inst = bootstrap.Modal.getInstance(el);
+                if(inst) inst.hide();
+            }
+        }
+    </script>
+</body>
+</html>

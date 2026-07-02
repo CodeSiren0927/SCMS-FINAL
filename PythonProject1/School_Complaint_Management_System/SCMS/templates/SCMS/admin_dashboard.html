@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            background-color: #05070a;
+            color: #e0e0e0;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-image: radial-gradient(circle at 20% 30%, #1a1a2e 0%, #05070a 70%);
+            padding-bottom: 100px;
+        }
+        /* Success Message Styling */
+        .alert-success {
+            background: #00ff41;
+            color: black;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Orbitron';
+        }
+        .header-btns {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            display: flex;
+            gap: 10px;
+        }
+        .notify-badge {
+            background: #00d4ff;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: black;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+        .rejected-link {
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: 1px solid #ff3e3e;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .rejected-link:hover { background: #444; border-color: #ff3e3e; }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #ffffff;
+            border-bottom: 2px solid #1a1a2e;
+            padding-bottom: 20px;
+            text-shadow: 0 0 10px #00d4ff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(10, 10, 20, 0.6);
+            border: 1px solid #2a2a4a;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 40px;
+        }
+        th {
+            text-align: left;
+            padding: 24px;
+            color: #00d4ff;
+            font-size: 18px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #2a2a4a;
+        }
+        td {
+            padding: 24px;
+            border-bottom: 1px solid #1a1a2e;
+            font-size: 18px;
+        }
+        .clickable-row {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .clickable-row:hover {
+            background-color: rgba(0, 212, 255, 0.15);
+            transform: scale(1.005);
+        }
+        .status-badge {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        /* Updated Slugified Case-Insensitive CSS Status Rules */
+        .pending { color: #ffeb3b; text-shadow: 0 0 5px #ffeb3b; }
+        .in-progress { color: #00d4ff; text-shadow: 0 0 5px #00d4ff; }
+        .resolved, .approved { color: #00ff41; text-shadow: 0 0 5px #00ff41; }
+        .rejected { color: #ff3e3e; text-shadow: 0 0 5px #ff3e3e; }
+
+        /* --- LOGOUT BUTTON & MODAL STYLING --- */
+        .logout-trigger-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            background: rgba(255, 62, 62, 0.1);
+            color: #ff3e3e;
+            border: 2px solid #ff3e3e;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 62, 62, 0.2);
+            z-index: 1000;
+        }
+        .logout-trigger-btn:hover {
+            background: #ff3e3e;
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 62, 62, 0.6);
+            transform: scale(1.05);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+        }
+
+        .logout-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #111;
+            border: 1px solid #ff3e3e;
+            padding: 40px;
+            z-index: 2001;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 62, 62, 0.3);
+            border-radius: 5px;
+            width: 90%;
+            max-width: 450px;
+        }
+        .logout-modal h3 {
+            color: #ff3e3e;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
+        }
+        .logout-modal p {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        .modal-btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .btn-confirm-logout {
+            background: #ff3e3e;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        .btn-confirm-logout:hover {
+            filter: brightness(1.3);
+            box-shadow: 0 0 15px rgba(255, 62, 62, 0.6);
+        }
+        .btn-cancel-logout {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-cancel-logout:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-btns">
+        <div class="notify-badge">ACTIVE: {{ complaints|length }}</div>
+        <a href="{% url 'view_rejected' %}" class="rejected-link">VIEW REJECTED</a>
+    </div>
+
+    <h2>Administrative Dashboard</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Complaint Title</th>
+                <th>Category</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for complaint in complaints %}
+            <tr class="clickable-row" onclick="window.location='{% url "complaint_detail" complaint.pk %}';">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ complaint.student.username }}</td>
+                <td style="font-weight: 500;">{{ complaint.title }}</td>
+                <td>{{ complaint.category }}</td>
+                <td>
+                    <!-- Added slugify to handle complex strings safely in CSS class assignments -->
+                    <span class="status-badge {{ complaint.status|slugify }}">
+                        {{ complaint.status }}
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: #555555; padding: 40px;">System Scan: No active complaints found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="button" class="logout-trigger-btn" onclick="openLogoutModal()">LOGOUT</button>
+
+    <div id="logoutOverlay" class="modal-overlay" onclick="closeLogoutModal()"></div>
+    <div id="logoutModal" class="logout-modal">
+        <h3>SYSTEM DISCONNECT</h3>
+        <p>Are you sure you want to log out of the admin console?</p>
+        <div class="modal-btn-group">
+            <a href="{% url 'logout' %}" class="btn-confirm-logout">CONFIRM</a>
+            <button type="button" class="btn-cancel-logout" onclick="closeLogoutModal()">CANCEL</button>
+        </div>
+    </div>
+
+    <script>
+        // Modal Logic
+        function openLogoutModal() {
+            document.getElementById('logoutOverlay').style.display = 'block';
+            document.getElementById('logoutModal').style.display = 'block';
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutOverlay').style.display = 'none';
+            document.getElementById('logoutModal').style.display = 'none';
+        }
+
+        // Auto-hide success messages after 5 seconds
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert-success');
+            alerts.forEach(function(alert) {
+                alert.style.display = 'none';
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

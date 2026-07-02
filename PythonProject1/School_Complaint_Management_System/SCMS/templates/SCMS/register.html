@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <title>Join the Alliance</title>
+    <style>
+        /* Lock the viewport to exactly 100% height and width, forbidding scrollbars */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: #05070a;
+            color: #e0e0e0;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at 75% 30%, #0d201f 0%, #05070a 65%);
+        }
+
+        .space-bg {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            top: 0; left: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+            background-size: 550px 550px, 350px 350px;
+            background-position: 0 0, 40px 60px;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 1100px;
+            max-width: 95vw;
+            height: 90vh;
+            max-height: 700px;
+            gap: 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-panel {
+            flex: 1;
+            max-width: 450px;
+            background: rgba(5, 15, 10, 0.75);
+            border: 2px solid #00ff66;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.25), inset 0 0 15px rgba(0, 255, 102, 0.1);
+            backdrop-filter: blur(8px);
+        }
+
+        .form-panel h2 {
+            color: #ffffff;
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            border-bottom: 1px solid rgba(0, 255, 102, 0.3);
+            padding-bottom: 15px;
+            text-align: center;
+        }
+
+        .form-panel p {
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .form-panel label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #00ff66;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .form-panel input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ff66;
+            color: #ffffff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-panel input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+            background: rgba(0, 40, 15, 0.4);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #00ff66;
+            color: #05070a;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .auth-redirect {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+        .auth-redirect:hover {
+            color: #00ff66;
+        }
+
+        .visual-panel {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 100%;
+        }
+
+        .alien-container {
+            width: 100%;
+            max-width: 500px;
+            max-height: 65vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 102, 0.2));
+            animation: floatSystem 4s ease-in-out infinite;
+        }
+
+        .alien-container svg {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+        }
+
+        .hologram-card {
+            margin-top: -10px;
+            background: rgba(0, 255, 102, 0.05);
+            border: 1px dashed #00ff66;
+            padding: 15px 35px;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        .hologram-card::before, .hologram-card::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 10px;
+            border-color: #00ff66;
+            border-style: solid;
+        }
+        .hologram-card::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+        .hologram-card::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+        .hologram-text {
+            color: #00ff66;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-shadow: 0 0 12px rgba(0, 255, 102, 0.8);
+            margin: 0;
+            text-align: center;
+        }
+
+        @keyframes floatSystem {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="space-bg"></div>
+
+    <div class="container">
+
+        <div class="form-panel">
+            <h2>JOIN THE ALLIANCE</h2>
+
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+
+                {% for field in form.visible_fields %}
+                    {% if field.name != 'first_name' and field.name != 'last_name' %}
+                        <p>
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </p>
+                    {% endif %}
+                {% endfor %}
+
+                <button type="submit" class="submit-btn">BECOME AN ALIEN</button>
+            </form>
+
+            <a href="{% url 'login' %}" class="auth-redirect">Existing Operative? Authenticate System Here</a>
+        </div>
+
+        <div class="visual-panel">
+            <div class="alien-container">
+                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="alienSkin" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#a3f7bf" />
+                            <stop offset="100%" stop-color="#2d7a4d" />
+                        </linearGradient>
+                        <linearGradient id="suitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#e0e0e0" />
+                            <stop offset="100%" stop-color="#7a8a99" />
+                        </linearGradient>
+                        <linearGradient id="laserGlow" x1="0%" y1="50%" x2="100%" y2="50%">
+                            <stop offset="0%" stop-color="#00ff66" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#00ff66" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+
+                    <path d="M 220,380 C 220,380 180,450 150,500 L 450,500 C 420,450 380,380 380,380 Z" fill="url(#suitGrad)" stroke="#1a2e26" stroke-width="4"/>
+                    <ellipse cx="300" cy="380" rx="80" ry="25" fill="#2d3748" stroke="#00ff66" stroke-width="3" />
+                    <circle cx="350" cy="440" r="22" fill="#0d1b2a" stroke="#ffffff" stroke-width="2"/>
+                    <polygon points="350,425 338,448 362,448" fill="#00ff66"/>
+
+                    <path d="M 240,160 Q 200,90 190,95" fill="none" stroke="url(#alienSkin)" stroke-width="10" stroke-linecap="round"/>
+                    <circle cx="187" cy="97" r="14" fill="#00ff66" filter="drop-shadow(0 0 5px #00ff66)"/>
+                    <path d="M 360,160 Q 400,90 410,95" fill="none" stroke="url(#alienSkin)" stroke-width="10" stroke-linecap="round"/>
+                    <circle cx="413" cy="97" r="14" fill="#00ff66" filter="drop-shadow(0 0 5px #00ff66)"/>
+
+                    <path d="M 220,180 C 200,270 230,340 300,340 C 370,340 400,270 380,180 C 360,100 240,100 220,180 Z" fill="url(#alienSkin)" stroke="#133a22" stroke-width="4"/>
+
+                    <path d="M 240,210 Q 285,180 305,230 Q 275,270 245,240 Z" fill="#0b0f19" filter="drop-shadow(0 0 4px #000)"/>
+                    <ellipse cx="280" cy="215" rx="5" ry="8" fill="#ffffff" transform="rotate(-15 280 215)"/>
+                    <path d="M 360,210 Q 315,180 295,230 Q 325,270 355,240 Z" fill="#0b0f19" filter="drop-shadow(0 0 4px #000)"/>
+                    <ellipse cx="320" cy="215" rx="5" ry="8" fill="#ffffff" transform="rotate(15 320 215)"/>
+
+                    <path d="M -100,310 L 140,310" stroke="url(#laserGlow)" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M 220,400 Q 150,380 130,335" fill="none" stroke="url(#suitGrad)" stroke-width="36" stroke-linecap="round"/>
+                    <rect x="70" y="295" width="70" height="30" rx="8" fill="#4a5568" stroke="#1a202c" stroke-width="3"/>
+                    <circle cx="100" cy="310" r="10" fill="#00ff66"/>
+                    <rect x="30" y="303" width="40" height="14" rx="3" fill="#cbd5e0" stroke="#4a5568"/>
+                    <ellipse cx="30" cy="310" rx="4" ry="12" fill="#00ff66"/>
+                    <circle cx="10" cy="310" r="5" fill="#00ff66" filter="drop-shadow(0 0 8px #00ff66)"/>
+                </svg>
+            </div>
+
+            <div class="hologram-card">
+                <p class="hologram-text">BE ONE OF US.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

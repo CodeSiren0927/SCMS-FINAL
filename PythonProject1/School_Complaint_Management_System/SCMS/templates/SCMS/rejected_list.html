@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejected Complaints</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #05070a; color: white; font-family: 'Orbitron', sans-serif; padding: 40px; }
+        h2 { color: #ff3e3e; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Success Message Styling */
+        .alert-success {
+            background: #00ff41;
+            color: black;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .card {
+            background: #111;
+            padding: 20px;
+            border: 1px solid #ff3e3e;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+        }
+        .del-btn {
+            background: #ff3e3e;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        .del-btn:hover { background: #cc0000; }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00d4ff;
+            text-decoration: none;
+            border: 1px solid #00d4ff;
+            padding: 10px 20px;
+            border-radius: 4px;
+        }
+        .back-btn:hover { background: rgba(0, 212, 255, 0.1); }
+
+        /* Modal Styles */
+        .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-box { background: #1a1a2e; padding: 30px; border: 2px solid #ff3e3e; text-align: center; border-radius: 8px; width: 300px; }
+        .modal-box h3 { color: #ff3e3e; margin-top: 0; }
+        .modal-box button { margin: 5px; }
+    </style>
+</head>
+<body>
+    <h2>REJECTED COMPLAINTS (ADMIN ONLY)</h2>
+
+    <!-- System message alerts display console -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% for c in rejected %}
+    <div class="card">
+        <div>
+            <strong>{{ c.title }}</strong><br>
+            <small>Student: {{ c.student.username }} | Remark: {{ c.admin_remarks }}</small>
+        </div>
+
+        <button class="del-btn" onclick="openModal('modal-{{ c.pk }}')">DELETE</button>
+    </div>
+
+    <div id="modal-{{ c.pk }}" class="modal-overlay">
+        <div class="modal-box">
+            <h3>ARE YOU SURE?</h3>
+            <p>This action will permanently delete this complaint.</p>
+            <!-- FIXED: Action altered from 'delete_complaint' to bypass student 404 block filters -->
+            <form action="{% url 'delete_complaint_admin' c.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="del-btn">YES, DELETE</button>
+                <button type="button" onclick="closeModal('modal-{{ c.pk }}')" style="background:#444; border:none; color:white; padding:10px 20px; cursor:pointer;">CANCEL</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <p style="color:#555;">No rejected complaints found.</p>
+    {% endfor %}
+
+    <br>
+    <a href="{% url 'admin_dashboard' %}" class="back-btn">&larr; BACK TO DASHBOARD</a>
+
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        // Automatically clean up alerts after 5 seconds
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert-success');
+            alerts.forEach(function(alert) {
+                alert.style.display = 'none';
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
