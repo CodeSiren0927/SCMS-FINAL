@@ -12,14 +12,117 @@
         .btn:hover { filter: brightness(1.5); box-shadow: 0 0 20px rgba(255,255,255,0.5); transform: scale(1.05); }
         .btn-approve { background-color: #00ff41; color: black; }
         .btn-reject { background-color: #ff3e3e; color: white; }
+
+        /* Restrict Access Button Component Styling */
+        .btn-restrict {
+            background: rgba(255, 62, 62, 0.1);
+            color: #ff3e3e;
+            border: 2px solid #ff3e3e;
+            margin-left: auto; /* Pushes button to the far right of the flexbox */
+        }
+        .btn-restrict:hover {
+            background-color: #ff3e3e;
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 62, 62, 0.6);
+        }
+
+        /* Success Message Banner Styling */
+        .alert-success {
+            display: none;
+            background: #00ff41;
+            color: black;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
         .modal { display: none; margin-top: 20px; padding: 25px; border: 1px solid #333; background: #111; }
         textarea { width: 100%; padding: 20px; background: #000; border: 1px solid #444; color: white; font-size: 16px; margin-bottom: 10px; box-sizing: border-box; }
         .back-btn { display: inline-block; margin-top: 40px; padding: 15px 30px; border: 2px solid #00d4ff; color: #00d4ff; text-decoration: none; font-size: 16px; border-radius: 2px; }
         .back-btn:hover { background: #00d4ff; color: #000; }
+
+        /* --- CUSTOM RESTRICTION MODAL STYLING --- */
+        .restrict-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 3000;
+        }
+        .restrict-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0a0c16;
+            border: 2px solid #ff3e3e;
+            padding: 35px;
+            z-index: 3001;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(255, 62, 62, 0.4);
+            border-radius: 4px;
+            width: 90%;
+            max-width: 500px;
+        }
+        .restrict-modal h3 {
+            color: #ff3e3e;
+            font-size: 26px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 62, 62, 0.6);
+        }
+        .restrict-modal p {
+            font-size: 16px;
+            color: #cccccc;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            font-family: sans-serif;
+        }
+        .restrict-modal-btns {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .btn-confirm-restrict {
+            background: #ff3e3e;
+            color: white;
+            padding: 12px 25px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-confirm-restrict:hover {
+            background: #ff6e6e;
+            box-shadow: 0 0 15px rgba(255, 62, 62, 0.8);
+            transform: scale(1.05);
+        }
+        .btn-cancel-restrict {
+            background: #222;
+            color: #aaa;
+            border: 1px solid #444;
+            padding: 12px 25px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-cancel-restrict:hover {
+            background: #333;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div id="dynamicAlert" class="alert-success"></div>
+
         <h3>{{ complaint.title }}</h3>
         <div class="content-box">{{ complaint.description }}</div>
 
@@ -27,13 +130,17 @@
             {% csrf_token %}
             <input type="hidden" name="status" id="statusField" value="{{ complaint.status }}">
 
-            <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <div style="display: flex; gap: 15px; margin-top: 30px; align-items: center;">
                 <button type="button" class="btn btn-approve" onclick="showModal('approval-wrapper', 'Approved')">Approve</button>
                 <button type="button" class="btn btn-reject" onclick="showModal('rejection-wrapper', 'Rejected')">Reject</button>
+
+                <button type="button" id="restrictBtn" class="btn btn-restrict" onclick="restrictUserAccount('{{ complaint.student.id }}', '{{ complaint.student.username }}')">
+                    Restrict User
+                </button>
             </div>
 
             <div id="approval-wrapper" class="modal">
-                <p>CONFIRM APPROVAL FOR COMPLAINT #{{ complaint.id }}?</p>
+                <p>CONFIRM APPROVAL FOR COMPLAINT?</p>
                 <button type="submit" class="btn btn-approve">CONFIRM</button>
                 <button type="button" class="btn" style="background:#444; color:white;" onclick="hideModals()">CANCEL</button>
             </div>
@@ -45,6 +152,16 @@
             </div>
         </form>
         <a href="{% url 'admin_dashboard' %}" class="back-btn">&larr; RETURN TO DASHBOARD</a>
+    </div>
+
+    <div id="restrictOverlay" class="restrict-modal-overlay" onclick="closeRestrictModal()"></div>
+    <div id="restrictModal" class="restrict-modal">
+        <h3>PROTOCOL: USER RESTRICTION</h3>
+        <p>Are you sure you want to restrict <span id="restrictTargetUser" style="color: #ff3e3e; font-weight: bold;"></span> from submitting new claims? Active system authentication sessions will remain online.</p>
+        <div class="restrict-modal-btns">
+            <button type="button" id="btnExecuteRestriction" class="btn-confirm-restrict">EXECUTE BAN</button>
+            <button type="button" class="btn-cancel-restrict" onclick="closeRestrictModal()">ABORT</button>
+        </div>
     </div>
 
     <script>
@@ -67,6 +184,66 @@
             document.getElementById('rejection-wrapper').style.display = 'none';
             // Reset required property when modals close
             document.getElementById('remarksField').required = false;
+        }
+
+        // Restrict User Permissions via Cyber Modal Overlay Window Trigger
+        function restrictUserAccount(userId, username) {
+            document.getElementById('restrictTargetUser').innerText = `"${username.toUpperCase()}"`;
+            document.getElementById('restrictOverlay').style.display = 'block';
+            document.getElementById('restrictModal').style.display = 'block';
+
+            // Bind network target dynamically to the custom confirmation execution button
+            document.getElementById('btnExecuteRestriction').onclick = function() {
+                executeRestrictionAjax(userId, username);
+            };
+        }
+
+        function executeRestrictionAjax(userId, username) {
+            const restrictionUrl = `/admin/users/${userId}/restrict-complaints/`;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const button = document.getElementById('restrictBtn');
+
+            fetch(restrictionUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ 'restrict': true })
+            })
+            .then(response => {
+                closeRestrictModal();
+
+                // Instantly lock down UI state to show restriction was successfully applied
+                button.innerText = "RESTRICTED";
+                button.disabled = true;
+                button.style.background = "#222";
+                button.style.borderColor = "#444";
+                button.style.color = "#666";
+                button.style.boxShadow = "none";
+                button.style.cursor = "default";
+                button.style.transform = "none";
+                button.style.filter = "none";
+
+                // Show success system ban banner feedback
+                const alertBox = document.getElementById('dynamicAlert');
+                alertBox.innerText = `User ${username} successfully restricted from submitting complaints. Account access preserved.`;
+                alertBox.style.display = 'block';
+
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 5000);
+            })
+            .catch(error => {
+                console.error('Error restricting user:', error);
+                closeRestrictModal();
+            });
+        }
+
+        function closeRestrictModal() {
+            document.getElementById('restrictOverlay').style.display = 'none';
+            document.getElementById('restrictModal').style.display = 'none';
         }
     </script>
 </body>

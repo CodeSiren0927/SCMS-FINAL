@@ -68,6 +68,7 @@ body {
     width: 100%;
     max-width: 420px;
     padding: 2.5rem;
+    z-index: 10;
 }
 
 .brand-text {
@@ -140,18 +141,91 @@ body {
     text-decoration: none;
     font-size: 0.85rem;
     transition: color 0.3s ease;
+    cursor: pointer;
 }
 
 .auth-link:hover {
     color: #fff;
     text-shadow: 0 0 5px #00d4ff;
 }
+
+/* Alert Notification Boxes styling */
+.alert-container {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    max-width: 420px;
+    z-index: 1050;
+}
+.alert-success-cosmic {
+    background: rgba(0, 255, 65, 0.1);
+    color: #00ff41;
+    border: 1px solid #00ff41;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+}
+
+/* --- SYSTEM CONTROL MODAL OVERLAYS --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 2000;
+}
+
+.cyber-modal {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #0d0f17;
+    border: 1px solid #b533ff;
+    box-shadow: 0 0 30px rgba(181, 51, 255, 0.2);
+    padding: 35px;
+    z-index: 2001;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 440px;
+}
+.cyber-modal h3 {
+    font-size: 20px;
+    color: #b533ff;
+    text-shadow: 0 0 10px rgba(181, 51, 255, 0.4);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+.modal-btn-group {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+.btn-cyber-primary {
+    background: transparent; color: #b533ff; padding: 10px 20px; font-weight: bold; border: 1px solid #b533ff; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+}
+.btn-cyber-primary:hover { background: #b533ff; color: white; box-shadow: 0 0 15px rgba(181, 51, 255, 0.5); }
+.btn-cyber-secondary {
+    background: transparent; color: #a0a0a0; border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; font-weight: bold; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+}
+.btn-cyber-secondary:hover { background: rgba(255,255,255,0.05); color: #fff; }
 </style>
 </head>
 <body>
 
 <canvas id="spaceCanvas"></canvas>
 <div class="milky-way"></div>
+
+{% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+            <div class="alert alert-success-cosmic p-3 rounded mb-2">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
 
 <div class="container d-flex justify-content-center">
     <div class="card login-card">
@@ -168,7 +242,7 @@ body {
             <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <label for="password" class="form-label text-uppercase mb-0">Password</label>
-                    <a href="#" class="auth-link">Forgot?</a>
+                    <a onclick="openResetModal()" class="auth-link">Forgot?</a>
                 </div>
                 <input type="password" class="form-control form-control-lg mt-2" id="password" name="password" placeholder="••••••••" required>
             </div>
@@ -186,9 +260,39 @@ body {
     </div>
 </div>
 
+<div id="globalModalOverlay" class="modal-overlay" onclick="closeResetModal()"></div>
+<div id="passwordResetRequestModal" class="cyber-modal">
+    <h3>SECURITY OVERRIDE</h3>
+    <p class="text-secondary small mb-4" style="font-family: sans-serif; line-height: 1.5;">Enter your core registered email terminal address. A manual password patch request will log into the administrator pipeline tracking grid.</p>
+
+    <form action="{% url 'request_password_reset' %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-2">
+            <label for="reset_email" class="form-label text-uppercase">Terminal Email</label>
+            <input type="email" class="form-control form-control-lg" id="reset_email" name="email" placeholder="alias@universe.com" required>
+        </div>
+        <div class="modal-btn-group">
+            <button type="button" class="btn-cyber-secondary" onclick="closeResetModal()">ABORT</button>
+            <button type="submit" class="btn-cyber-primary">PIPE REQUEST</button>
+        </div>
+    </form>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+/* --- OVERLAY PATTERN MODAL INTERACTION INTERFACE --- */
+function openResetModal() {
+    document.getElementById('globalModalOverlay').style.display = 'block';
+    document.getElementById('passwordResetRequestModal').style.display = 'block';
+}
+
+function closeResetModal() {
+    document.getElementById('globalModalOverlay').style.display = 'none';
+    document.getElementById('passwordResetRequestModal').style.display = 'none';
+}
+
+/* --- STARFIELD PARTICLE EMITTER RENDERING ENGINE --- */
 const canvas = document.getElementById('spaceCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -211,13 +315,10 @@ class FallingStar {
     reset() {
         this.x = Math.random() * width;
 
-        // Whole screen implementation logic
         if (this.initialSetup) {
-            // Distribute stars seamlessly across the full height axis on instantiation
             this.y = Math.random() * height;
             this.initialSetup = false;
         } else {
-            // Standard recycle frame boundary limits
             this.y = Math.random() * -100;
         }
 
@@ -255,7 +356,6 @@ class FallingStar {
     }
 }
 
-// Increased particle threshold limit to 55 elements for complete coverage densities
 const starArray = Array.from({ length: 55 }, () => new FallingStar(true));
 
 function renderLoop() {
@@ -271,6 +371,16 @@ function renderLoop() {
 }
 
 renderLoop();
+
+// Auto-expire success notification box layouts smoothly
+setTimeout(function() {
+    var alerts = document.querySelectorAll('.alert-success-cosmic');
+    alerts.forEach(function(el) {
+        el.style.transition = "opacity 0.4s ease";
+        el.style.opacity = "0";
+        setTimeout(() => { el.remove(); }, 400);
+    });
+}, 5000);
 </script>
 </body>
 </html>

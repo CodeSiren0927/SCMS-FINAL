@@ -14,7 +14,7 @@
             background-image: radial-gradient(circle at 20% 30%, #1a1a2e 0%, #05070a 70%);
             padding-bottom: 100px;
         }
-        /* Success Message Styling */
+        /* Alert Message Styling */
         .alert-success {
             background: #00ff41;
             color: black;
@@ -25,12 +25,31 @@
             font-weight: bold;
             font-family: 'Orbitron';
         }
+        .alert-critical {
+            background: #ff3e3e;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Orbitron';
+            box-shadow: 0 0 15px rgba(255, 62, 62, 0.5);
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 10px rgba(255, 62, 62, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(255, 62, 62, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(255, 62, 62, 0.4); }
+        }
+
         .header-btns {
             position: absolute;
             top: 20px;
             right: 40px;
             display: flex;
             gap: 10px;
+            align-items: center;
         }
         .notify-badge {
             background: #00d4ff;
@@ -52,6 +71,35 @@
             transition: all 0.3s;
         }
         .rejected-link:hover { background: #444; border-color: #ff3e3e; }
+
+        /* Glowing Incoming Alerts Trigger Button */
+        .alerts-trigger-btn {
+            background: rgba(0, 255, 65, 0.1);
+            color: #00ff41;
+            padding: 12px 20px;
+            border-radius: 5px;
+            border: 1px solid #00ff41;
+            font-size: 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .alerts-trigger-btn:hover {
+            background: #00ff41;
+            color: black;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+        }
+        .count-badge {
+            background: #ff3e3e;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-left: 8px;
+            box-shadow: 0 0 8px #ff3e3e;
+        }
 
         h2 {
             font-size: 32px;
@@ -91,7 +139,6 @@
         }
         .clickable-row:hover {
             background-color: rgba(0, 212, 255, 0.15);
-            transform: scale(1.005);
         }
         .status-badge {
             font-weight: bold;
@@ -99,13 +146,31 @@
             font-size: 16px;
         }
 
-        /* Updated Slugified Case-Insensitive CSS Status Rules */
+        /* Restrict Access Button Component Styling */
+        .btn-restrict-user {
+            background: rgba(255, 62, 62, 0.1);
+            color: #ff3e3e;
+            border: 1px solid #ff3e3e;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-restrict-user:hover {
+            background: #ff3e3e;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
+        }
+
         .pending { color: #ffeb3b; text-shadow: 0 0 5px #ffeb3b; }
         .in-progress { color: #00d4ff; text-shadow: 0 0 5px #00d4ff; }
         .resolved, .approved { color: #00ff41; text-shadow: 0 0 5px #00ff41; }
         .rejected { color: #ff3e3e; text-shadow: 0 0 5px #ff3e3e; }
 
-        /* --- LOGOUT BUTTON & MODAL STYLING --- */
+        /* --- FIXED CORNER ACTION TRIGGERS --- */
         .logout-trigger-btn {
             position: fixed;
             bottom: 30px;
@@ -131,6 +196,89 @@
             transform: scale(1.05);
         }
 
+        /* Unified 250px Layout System for Utilities Panel Actions */
+        .user-directory-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 40px;
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            border: 2px solid #00d4ff;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+            z-index: 1000;
+            width: 250px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .user-directory-btn:hover {
+            background: #00d4ff;
+            color: black;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+        }
+
+        .reset-requests-trigger-btn {
+            position: fixed;
+            bottom: 85px;
+            left: 40px;
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            border: 2px solid #00d4ff;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+            z-index: 1000;
+            width: 250px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .reset-requests-trigger-btn:hover {
+            background: #00d4ff;
+            color: black;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+        }
+
+        .purged-log-trigger-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 305px;
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+            border: 2px solid #ffc107;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 193, 7, 0.2);
+            z-index: 1000;
+            width: 250px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .purged-log-trigger-btn:hover {
+            background: #ffc107;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.6);
+        }
+
+        /* --- SYSTEM CONTROL MODAL OVERLAYS --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -140,76 +288,155 @@
             z-index: 2000;
         }
 
-        .logout-modal {
+        .cyber-modal {
             display: none;
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             background: #111;
-            border: 1px solid #ff3e3e;
+            border: 1px solid #444;
             padding: 40px;
             z-index: 2001;
             text-align: center;
-            box-shadow: 0 0 30px rgba(255, 62, 62, 0.3);
             border-radius: 5px;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
         }
-        .logout-modal h3 {
-            color: #ff3e3e;
+        .cyber-modal.warning {
+            border-color: #ff3e3e;
+            box-shadow: 0 0 30px rgba(255, 62, 62, 0.3);
+        }
+        .cyber-modal.info {
+            border-color: #00d4ff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            text-align: left;
+        }
+
+        .cyber-modal h3 {
             font-size: 24px;
             margin-top: 0;
             margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
+            text-transform: uppercase;
         }
-        .logout-modal p {
-            font-size: 18px;
-            color: #ccc;
-            margin-bottom: 30px;
-        }
+        .cyber-modal.warning h3 { color: #ff3e3e; text-shadow: 0 0 10px rgba(255, 62, 62, 0.5); }
+        .cyber-modal.info h3 { color: #00d4ff; text-shadow: 0 0 10px rgba(0, 212, 255, 0.5); margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+
         .modal-btn-group {
             display: flex;
             gap: 20px;
             justify-content: center;
+            margin-top: 30px;
         }
-        .btn-confirm-logout {
-            background: #ff3e3e;
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
+        .btn-cyber-primary {
+            background: #ff3e3e; color: white; padding: 12px 25px; text-decoration: none; font-weight: bold; font-family: 'Orbitron', sans-serif; border: none; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-cyber-primary:hover { filter: brightness(1.3); box-shadow: 0 0 15px rgba(255, 62, 62, 0.6); }
+        .btn-cyber-secondary {
+            background: #333; color: white; border: none; padding: 12px 25px; font-weight: bold; font-family: 'Orbitron', sans-serif; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-cyber-secondary:hover { background: #555; }
+
+        /* User Grid Profile Structure Inside info Dossier Modal */
+        .user-detail-grid { display: grid; grid-template-columns: 1fr; gap: 15px; font-family: sans-serif; font-size: 16px; }
+        .detail-item span { color: #888; font-family: 'Orbitron', sans-serif; font-size: 12px; display: block; margin-bottom: 2px; text-transform: uppercase; }
+        .detail-item div { color: white; background: #1a1a2e; padding: 10px; border: 1px solid #333; border-radius: 3px; }
+
+        /* --- OFFCANVAS SLIDE DIRECTORY STYLING --- */
+        .offcanvas-panel {
+            position: fixed;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background: rgba(10, 12, 22, 0.95);
+            backdrop-filter: blur(25px);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            z-index: 2500;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        /* Panels Structural Positions */
+        .panel-right { right: -450px; border-left: 1px solid rgba(0, 212, 255, 0.3); }
+        .panel-right.open { right: 0; }
+
+        .panel-left { left: -450px; border-right: 1px solid rgba(0, 212, 255, 0.3); }
+        .panel-left.open { left: 0; }
+
+        .offcanvas-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .offcanvas-title {
+            color: #00d4ff;
+            font-size: 20px;
             font-weight: bold;
-            font-family: 'Orbitron', sans-serif;
-            border-radius: 3px;
-            transition: all 0.3s;
+            margin: 0;
+            text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
         }
-        .btn-confirm-logout:hover {
-            filter: brightness(1.3);
-            box-shadow: 0 0 15px rgba(255, 62, 62, 0.6);
-        }
-        .btn-cancel-logout {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-weight: bold;
-            font-family: 'Orbitron', sans-serif;
-            border-radius: 3px;
+        .close-panel-btn { background: transparent; color: #fff; border: none; font-size: 24px; cursor: pointer; font-family: sans-serif; }
+        .close-panel-btn:hover { color: #ff3e3e; }
+
+        /* Account Item Cards Inside Left Panel */
+        .user-list-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .btn-cancel-logout:hover {
-            background: #555;
+        .user-list-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateX(5px);
         }
+        .user-list-card h6 { margin: 0; font-size: 16px; color: white; font-family: sans-serif; }
+        .user-list-card span { font-size: 11px; color: #888; font-family: 'Orbitron'; }
+
+        /* Existing Comms Alerts */
+        .alert-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid #ffeb3b; box-shadow: 0 0 10px rgba(255, 235, 59, 0.15); border-radius: 6px; padding: 20px; margin-bottom: 20px; transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .alert-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .alert-card-title { font-size: 15px; color: #ffffff; margin: 0; font-weight: bold; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .alert-card-meta { font-size: 12px; color: #888; margin-bottom: 12px; }
+        .alert-card-desc { font-family: sans-serif; font-size: 14px; color: #ccc; margin: 0 0 15px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .alert-card-actions { display: flex; gap: 10px; }
+        .btn-card-review { background: transparent; border: 1px solid #00d4ff; color: #00d4ff; padding: 6px 14px; font-size: 12px; font-weight: bold; border-radius: 3px; text-decoration: none; font-family: 'Orbitron'; transition: all 0.2s; }
+        .btn-card-review:hover { background: #00d4ff; color: black; }
+        .btn-card-clear { background: transparent; border: 1px solid #ff3e3e; color: #ff3e3e; padding: 6px 14px; font-size: 12px; font-weight: bold; border-radius: 3px; cursor: pointer; font-family: 'Orbitron'; transition: all 0.2s; }
+        .btn-card-clear:hover { background: #ff3e3e; color: white; }
     </style>
 </head>
 <body>
 
+    <!-- Django token generator placeholder inside the DOM body to safeguard dynamic JavaScript calls -->
+    {% csrf_token %}
+
     <div class="header-btns">
+        <button type="button" class="alerts-trigger-btn" onclick="openAlertsPanel()">
+            INCOMING ALERTS
+            {% if pending_count > 0 %}
+                <span class="count-badge" id="globalAlertCount">{{ pending_count }}</span>
+            {% endif %}
+        </button>
+
         <div class="notify-badge">ACTIVE: {{ complaints|length }}</div>
         <a href="{% url 'view_rejected' %}" class="rejected-link">VIEW REJECTED</a>
     </div>
 
     <h2>Administrative Dashboard</h2>
+
+    <div id="dynamicAlertBox"></div>
 
     {% if messages %}
         {% for message in messages %}
@@ -221,65 +448,358 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Student</th>
+                <th>Username</th>
                 <th>Complaint Title</th>
                 <th>Category</th>
                 <th>Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for complaint in complaints %}
-            <tr class="clickable-row" onclick="window.location='{% url "complaint_detail" complaint.pk %}';">
-                <td>{{ forloop.counter }}</td>
-                <td>{{ complaint.student.username }}</td>
-                <td style="font-weight: 500;">{{ complaint.title }}</td>
-                <td>{{ complaint.category }}</td>
-                <td>
-                    <!-- Added slugify to handle complex strings safely in CSS class assignments -->
+            <tr class="clickable-row">
+                <td onclick="window.location='{% url "complaint_detail" complaint.pk %}';">{{ forloop.counter }}</td>
+                <td onclick="window.location='{% url "complaint_detail" complaint.pk %}';">{{ complaint.student.username }}</td>
+                <td onclick="window.location='{% url "complaint_detail" complaint.pk %}';" style="font-weight: 500;">{{ complaint.title }}</td>
+                <td onclick="window.location='{% url "complaint_detail" complaint.pk %}';">{{ complaint.category }}</td>
+                <td onclick="window.location='{% url "complaint_detail" complaint.pk %}';">
                     <span class="status-badge {{ complaint.status|slugify }}">
                         {{ complaint.status }}
                     </span>
                 </td>
+                <td>
+                    <button type="button" class="btn-restrict-user" onclick="restrictUserAccount(this, '{{ complaint.student.id }}', '{{ complaint.student.username }}')">
+                        RESTRICT
+                    </button>
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="5" style="text-align: center; color: #555555; padding: 40px;">System Scan: No active complaints found.</td>
+                <td colspan="6" style="text-align: center; color: #555555; padding: 40px;">System Scan: No active complaints found.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
+    <div id="alertsPanel" class="offcanvas-panel panel-right">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">PENDING CHANNELS</h5>
+            <button type="button" class="close-panel-btn" onclick="closeAlertsPanel()">&times;</button>
+        </div>
+
+        <div id="alertCardsContainer">
+            {% if pending_transmissions %}
+                {% for transmission in pending_transmissions %}
+                    <div class="alert-card" id="transmission-card-{{ transmission.pk }}">
+                        <div class="alert-card-header">
+                            <div>
+                                <span style="color: #ffeb3b; font-size: 11px; letter-spacing: 1px; font-weight: bold; text-transform: uppercase;">{{ transmission.category }}</span>
+                                <h6 class="alert-card-title" title="{{ transmission.title }}">{{ transmission.title }}</h6>
+                            </div>
+                            <span class="pending" style="font-size: 13px; font-weight: bold;">PENDING</span>
+                        </div>
+
+                        <div class="alert-card-meta">From: {{ transmission.student.username|upper }}</div>
+                        <p class="alert-card-desc">{{ transmission.description }}</p>
+
+                        <div class="alert-card-actions">
+                            <a href="{% url 'complaint_detail' transmission.pk %}" class="btn-card-review">REVIEW</a>
+                            <form action="{% url 'delete_complaint_admin' transmission.pk %}" method="POST" style="margin: 0;" onsubmit="clearTransmissionAsync(event, '{{ transmission.pk }}')">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-card-clear">CLEAR</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div id="emptyPanelMessage" style="text-align: center; padding: 40px 0; color: #555;">
+                    <p style="font-size: 14px; letter-spacing: 1px;">No pending alerts.<br>Comms channel completely clear.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="directoryPanel" class="offcanvas-panel panel-left">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">USER CONTROL DIRECTORY</h5>
+            <button type="button" class="close-panel-btn" onclick="closeDirectoryPanel()">&times;</button>
+        </div>
+
+        <div id="userCardsContainer">
+            {% if all_users %}
+                {% for registered_user in all_users %}
+                    <div class="user-list-card" onclick='openUserDetails("{{ registered_user.username }}", "{{ registered_user.email }}", "{{ registered_user.first_name }} {{ registered_user.last_name }}", "{{ registered_user.date_joined|date:"Y-m-d H:i" }}")'>
+                        <h6>{{ registered_user.username }}</h6>
+                        <span>ACCESS DATA &rarr;</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; padding: 40px 0; color: #555;">
+                    <p style="font-size: 14px; letter-spacing: 1px;">No accounts found in database records.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <button type="button" class="reset-requests-trigger-btn" onclick="openResetRequestsModal()">RESET REQUESTS <span class="count-badge" style="background:#00d4ff; color:black;">{{ reset_count }}</span></button>
+    <button type="button" class="user-directory-btn" onclick="openDirectoryPanel()">USER DIRECTORY</button>
+    <button type="button" class="purged-log-trigger-btn" onclick="openPurgedAccountsModal()">PURGE LOG</button>
+
     <button type="button" class="logout-trigger-btn" onclick="openLogoutModal()">LOGOUT</button>
 
-    <div id="logoutOverlay" class="modal-overlay" onclick="closeLogoutModal()"></div>
-    <div id="logoutModal" class="logout-modal">
+    <div id="globalModalOverlay" class="modal-overlay" onclick="closeAllModals()"></div>
+
+    <div id="passwordResetModal" class="cyber-modal info">
+        <h3>SECURITY KEY OVERRIDES</h3>
+        <div class="user-detail-grid" style="max-height: 300px; overflow-y: auto;">
+            {% if reset_requests %}
+                {% for req in reset_requests %}
+                    <div class="d-flex justify-content-between align-items-center p-2 mb-2" style="background: rgba(255,255,255,0.02); border-left: 3px solid #00d4ff; border-radius: 3px;">
+                        <div style="font-family: sans-serif; font-size: 14px;">
+                            <span style="color: #00d4ff; font-weight: bold; font-family: 'Orbitron'; font-size: 11px;">REQUESTED EMAIL</span>
+                            <div>{{ req.email }}</div>
+                        </div>
+                        <form action="{% url 'confirm_password_reset' req.id %}" method="POST" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-restrict-user" style="color: #00d4ff; border-color: #00d4ff; background: rgba(0, 212, 255, 0.05);">OVERRIDE</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #555; text-align: center; font-family: sans-serif; font-size: 14px;">No active override sync flags detected.</p>
+            {% endif %}
+        </div>
+        <div class="modal-btn-group" style="justify-content: flex-end;">
+            <button type="button" class="btn-cyber-secondary" onclick="closeAllModals()">CLOSE PANEL</button>
+        </div>
+    </div>
+
+    <div id="purgedAccountsModal" class="cyber-modal info" style="border-color: #ffc107; box-shadow: 0 0 30px rgba(255, 193, 7, 0.2);">
+        <h3 style="color: #ffc107; text-shadow: 0 0 10px rgba(255, 193, 7, 0.4);">SYSTEM PURGE RECORDS</h3>
+        <div class="user-detail-grid" style="max-height: 300px; overflow-y: auto; font-family: sans-serif; font-size: 14px;">
+            {% if deleted_accounts %}
+                {% for record in deleted_accounts %}
+                    <div class="p-2 mb-2 d-flex justify-content-between align-items-center" style="background: rgba(255,255,255,0.02); border-left: 3px solid #ffc107; border-radius: 3px;">
+                        <div>
+                            <span style="color: #ff3e3e; font-family: 'Orbitron'; font-size: 11px; font-weight: bold;">IDENTITY TERMINATED</span>
+                            <div style="color: white; font-weight: bold;">{{ record.username }}</div>
+                        </div>
+                        <div style="text-align: right; color: #888; font-size: 12px; font-family: 'Orbitron';">
+                            {{ record.deleted_at|date:"M d, H:i" }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #555; text-align: center; font-size: 14px;">No self-purged user tracking logs found.</p>
+            {% endif %}
+        </div>
+        <div class="modal-btn-group" style="justify-content: flex-end;">
+            <button type="button" class="btn-cyber-secondary" onclick="closeAllModals()">CLOSE LOG</button>
+        </div>
+    </div>
+
+    <div id="userDetailsModal" class="cyber-modal info">
+        <h3>USER DOSSIER SCAN</h3>
+        <div class="user-detail-grid">
+            <div class="detail-item">
+                <span>Account Username</span>
+                <div id="modal-user-username">---</div>
+            </div>
+            <div class="detail-item">
+                <span>Declared Full Name</span>
+                <div id="modal-user-fullname">---</div>
+            </div>
+            <div class="detail-item">
+                <span>Registered Email Address</span>
+                <div id="modal-user-email">---</div>
+            </div>
+            <div class="detail-item">
+                <span>System Joined Timestamp</span>
+                <div id="modal-user-date">---</div>
+            </div>
+        </div>
+        <div class="modal-btn-group" style="justify-content: flex-end;">
+            <button type="button" class="btn-cyber-secondary" onclick="closeAllModals()">CLOSE PROFILE</button>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="cyber-modal warning">
         <h3>SYSTEM DISCONNECT</h3>
         <p>Are you sure you want to log out of the admin console?</p>
         <div class="modal-btn-group">
-            <a href="{% url 'logout' %}" class="btn-confirm-logout">CONFIRM</a>
-            <button type="button" class="btn-cancel-logout" onclick="closeLogoutModal()">CANCEL</button>
+            <a href="{% url 'logout' %}" class="btn-cyber-primary">CONFIRM</a>
+            <button type="button" class="btn-cyber-secondary" onclick="closeAllModals()">CANCEL</button>
+        </div>
+    </div>
+
+    <div id="restrictModal" class="cyber-modal warning">
+        <h3>PROTOCOL: USER RESTRICTION</h3>
+        <p>Are you sure you want to restrict <span id="restrictTargetUser" style="color: #ff3e3e; font-weight: bold;"></span> from submitting new claims? Active system authentication sessions will remain online.</p>
+        <div class="modal-btn-group">
+            <button type="button" id="btnExecuteRestriction" class="btn-cyber-primary">EXECUTE BAN</button>
+            <button type="button" class="btn-cyber-secondary" onclick="closeAllModals()">ABORT</button>
         </div>
     </div>
 
     <script>
-        // Modal Logic
+        /* --- HELPER SYSTEM ROUTINE TO RETRIEVE CSRF SECURITY TOKENS --- */
+        function getCsrfToken() {
+            const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+            return tokenInput ? tokenInput.value : '';
+        }
+
+        /* --- OFFCANVAS SLIDE MODULE CONTROLLERS --- */
+        function openAlertsPanel() {
+            closeDirectoryPanel();
+            document.getElementById('alertsPanel').classList.add('open');
+        }
+        function closeAlertsPanel() {
+            document.getElementById('alertsPanel').classList.remove('open');
+        }
+        function openDirectoryPanel() {
+            closeAlertsPanel();
+            document.getElementById('directoryPanel').classList.add('open');
+        }
+        function closeDirectoryPanel() {
+            document.getElementById('directoryPanel').classList.remove('open');
+        }
+
+        /* --- CENTRALIZED WINDOW MODAL RESET CONTROLLER --- */
+        function closeAllModals() {
+            document.getElementById('globalModalOverlay').style.display = 'none';
+            document.getElementById('logoutModal').style.display = 'none';
+            document.getElementById('restrictModal').style.display = 'none';
+            document.getElementById('userDetailsModal').style.display = 'none';
+            document.getElementById('passwordResetModal').style.display = 'none';
+            document.getElementById('purgedAccountsModal').style.display = 'none';
+        }
+
         function openLogoutModal() {
-            document.getElementById('logoutOverlay').style.display = 'block';
+            closeDirectoryPanel();
+            closeAlertsPanel();
+            document.getElementById('globalModalOverlay').style.display = 'block';
             document.getElementById('logoutModal').style.display = 'block';
         }
 
-        function closeLogoutModal() {
-            document.getElementById('logoutOverlay').style.display = 'none';
-            document.getElementById('logoutModal').style.display = 'none';
+        function openResetRequestsModal() {
+            closeDirectoryPanel();
+            closeAlertsPanel();
+            document.getElementById('globalModalOverlay').style.display = 'block';
+            document.getElementById('passwordResetModal').style.display = 'block';
         }
 
-        // Auto-hide success messages after 5 seconds
-        setTimeout(function() {
-            var alerts = document.querySelectorAll('.alert-success');
-            alerts.forEach(function(alert) {
-                alert.style.display = 'none';
+        function openPurgedAccountsModal() {
+            closeDirectoryPanel();
+            closeAlertsPanel();
+            document.getElementById('globalModalOverlay').style.display = 'block';
+            document.getElementById('purgedAccountsModal').style.display = 'block';
+        }
+
+        /* --- DOSSIER DATA READER ENGINE --- */
+        function openUserDetails(username, email, fullname, dateJoined) {
+            document.getElementById('modal-user-username').innerText = username;
+            document.getElementById('modal-user-fullname').innerText = fullname.trim() !== "" ? fullname : "No Name Profile Declared";
+            document.getElementById('modal-user-email').innerText = email;
+            document.getElementById('modal-user-date').innerText = dateJoined;
+
+            document.getElementById('globalModalOverlay').style.display = 'block';
+            document.getElementById('userDetailsModal').style.display = 'block';
+        }
+
+        /* --- PRE-EXISTING AJAX SYSTEM ROUTINES --- */
+        function clearTransmissionAsync(event, transmissionId) {
+            event.preventDefault();
+            const form = event.target;
+            const targetUrl = form.action;
+            const formData = new FormData(form);
+
+            fetch(targetUrl, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCsrfToken()
+                }
+            })
+            .then(response => {
+                const targetCard = document.getElementById(`transmission-card-${transmissionId}`);
+                if (targetCard) {
+                    targetCard.style.opacity = '0';
+                    targetCard.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        targetCard.remove();
+                        const badge = document.getElementById('globalAlertCount');
+                        if (badge) {
+                            let count = parseInt(badge.innerText) - 1;
+                            if (count <= 0) {
+                                badge.remove();
+                                document.getElementById('alertCardsContainer').innerHTML = `
+                                    <div id="emptyPanelMessage" style="text-align: center; padding: 40px 0; color: #555;">
+                                        <p style="font-size: 14px; letter-spacing: 1px;">No pending alerts.<br>Comms channel completely clear.</p>
+                                    </div>`;
+                            } else {
+                                badge.innerText = count;
+                            }
+                        }
+                    }, 300);
+                }
+            })
+            .catch(error => console.error('Error clearing entry item data:', error));
+        }
+
+        let activeRestrictButton = null;
+        let activeRestrictUserId = null;
+
+        function restrictUserAccount(buttonElement, userId, username) {
+            activeRestrictButton = buttonElement;
+            activeRestrictUserId = userId;
+            document.getElementById('restrictTargetUser').innerText = `"${username.toUpperCase()}"`;
+
+            closeDirectoryPanel();
+            closeAlertsPanel();
+            document.getElementById('globalModalOverlay').style.display = 'block';
+            document.getElementById('restrictModal').style.display = 'block';
+        }
+
+        /* --- RESTRICTION SUBMIT HANDLER DISPATCHER --- */
+        document.getElementById('btnExecuteRestriction').addEventListener('click', function() {
+            if (!activeRestrictUserId) return;
+
+            // Update this fallback path setup to point to your specific restriction URL routing configuration
+            const targetUrl = `/restrict-user/${activeRestrictUserId}/`;
+
+            fetch(targetUrl, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCsrfToken()
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                closeAllModals();
+
+                // Show dynamic success banner confirmation inside your DOM layout anchor point
+                const alertBox = document.getElementById('dynamicAlertBox');
+                if (alertBox) {
+                    alertBox.innerHTML = `<div class="alert-success">ACCOUNT STATUS CHANGED: USER RESTRICTION PROTOCOLS SUCCESSFUL</div>`;
+                }
+
+                // Visual adjustment updates on target elements following server state response confirmations
+                if (activeRestrictButton) {
+                    activeRestrictButton.innerText = "RESTRICTED";
+                    activeRestrictButton.disabled = true;
+                    activeRestrictButton.style.background = "rgba(255, 62, 62, 0.4)";
+                    activeRestrictButton.style.color = "#aaa";
+                    activeRestrictButton.style.borderColor = "#555";
+                    activeRestrictButton.style.cursor = "not-allowed";
+                }
+            })
+            .catch(error => {
+                console.error('Error executing control operation restriction state:', error);
+                closeAllModals();
             });
-        }, 5000);
+        });
     </script>
 </body>
 </html>

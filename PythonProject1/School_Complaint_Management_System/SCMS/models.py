@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete  # IMPORTED pre_delete
 from django.dispatch import receiver
 
 
@@ -40,6 +40,9 @@ class StudentProfile(models.Model):
                                  verbose_name="School ID / Student ID")
     course_full_name = models.CharField(max_length=150, null=True, blank=True, verbose_name="Course Full Name")
 
+    # FIX 1: Added user restriction flag here to allow admin dashboard toggles
+    can_submit_complaints = models.BooleanField(default=True, verbose_name="Submission Privileges Status")
+
     def __str__(self):
         full_name = self.user.get_full_name() or self.user.username
         return f"{full_name} ({self.school_id or 'No ID Assigned'})"
@@ -48,9 +51,13 @@ class StudentProfile(models.Model):
 # --- UPDATED NOTIFICATION MODEL ---
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
-    complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE, related_name="notifications")
+
+    # FIX 2: Set null=True and blank=True so system overrides (Password Reset, Account Purge Log) don't throw IntegrityErrors
+    complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE, related_name="notifications", null=True,
+                                  blank=True)
+
     message = models.TextField()
-    status = models.CharField(max_length=20, default="Pending")  # <-- Added field to prevent TypeErrors and handle dynamic UI colors
+    status = models.CharField(max_length=20, default="Pending")
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -59,6 +66,19 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user.username}: {self.message[:30]}..."
+
+
+# --- NEW PURGE LOG MODEL ---
+class PurgedAccountLog(models.Model):
+    username = models.CharField(max_length=150)
+    email = models.EmailField(blank=True, null=True)
+    deleted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-deleted_at']
+
+    def __str__(self):
+        return f"TERMINATED: {self.username} on {self.deleted_at.strftime('%Y-%m-%d %H:%M')}"
 
 
 # ==================== SIGNALS ====================
@@ -75,13 +95,30 @@ def save_student_profile(sender, instance, **kwargs):
         instance.profile.save()
 
 
-# --- UPDATED: AUTOMATED STATUS CHANGE NOTIFICATION SIGNAL ---
+# --- NEW ACCOUNT DELETION SIGNAL ---
+@receiver(pre_delete, sender=User)
+def log_user_termination(sender, instance, **kwargs):
+    """
+    Triggered right before a User object is deleted from the database.
+    Captures their username and email and logs it to the PurgedAccountLog.
+    """
+    PurgedAccountLog.objects.create(
+        username=instance.username,
+        email=instance.email
+    )
+
+
+# --- AUTOMATED STATUS CHANGE NOTIFICATION SIGNAL ---
 @receiver(post_save, sender=Complaint)
 def notify_student_on_status_change(sender, instance, created, **kwargs):
     """
     Triggers an in-app notification record whenever an admin updates
-    the status of a student's complaint.
+    the status of a student's complaint. Includes a bypass guard check for silent administrative deletions.
     """
+    # Guard check: Ignore signal if this instance is flagged for a silent deletion rewrite
+    if getattr(instance, '_silent_delete', False):
+        return
+
     if not created:
         status_display = instance.get_status_display()
 
@@ -94,10 +131,9 @@ def notify_student_on_status_change(sender, instance, created, **kwargs):
         else:
             notification_message = f"The status of your complaint '{instance.title}' has been updated to: {status_display}."
 
-        # Create and commit the persistent notification instance into the database
         Notification.objects.create(
             user=instance.student,
             complaint=instance,
             message=notification_message,
-            status=instance.status  # <-- Included tracking state synchronization
+            status=instance.status
         )
